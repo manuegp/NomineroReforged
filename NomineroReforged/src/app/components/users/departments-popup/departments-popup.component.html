@@ -1,0 +1,61 @@
+<div class="container popup-container">
+    <div class="row">
+      <!-- Tabla -->
+      <div class="col-md-7">
+        <div class="card table-card">
+          <div class="card-body">
+            <table mat-table [dataSource]="paginatedDepartments" class="mat-elevation-z8 demo-table">
+              <!-- Columnas -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectDepartment(row)">
+              </tr>
+            </table>
+            <mat-paginator
+              [length]="totalDepartments"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="[5, 10, 20]"
+              showFirstLastButtons
+              aria-label="Paginación de departamentos"
+              (page)="onPageChange($event)"
+            >
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Formulario -->
+      <div class="col-md-5">
+        <div class="card form-card">
+          <div class="card-body">
+            <form [formGroup]="departmentForm">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nombre*</mat-label>
+                <input matInput formControlName="name" />
+              </mat-form-field>
+            </form>
+          </div>
+          <div class="button-group">
+            <button
+              mat-raised-button
+              color="primary"
+              [disabled]="!departmentForm.valid"
+              (click)="saveDepartment()"
+            >
+              {{ selectedDepartment ? 'Actualizar' : 'Guardar' }}
+            </button>
+            <button mat-raised-button color="accent" (click)="addNewDepartment()">Nuevo</button>
+            <button mat-raised-button color="warn" (click)="closePopup()">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

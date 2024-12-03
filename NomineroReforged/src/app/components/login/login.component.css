@@ -1,0 +1,77 @@
+.login-container {
+  min-height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.gradient-custom {
+  background: linear-gradient(to right, #0047AB, #40E0D0);
+}
+
+.card {
+  border: none;
+}
+
+@media (min-width: 768px) {
+  .gradient-custom {
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+  }
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #0047AB;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #40E0D0;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
+  color: #f44336;
+}
+
+::ng-deep .mat-input-element {
+  caret-color: #0047AB;
+}
+
+::ng-deep .mat-form-field-invalid .mat-input-element, .mat-warn .mat-input-element {
+  caret-color: #f44336;
+}
+
+::ng-deep .mat-form-field-label {
+  color: #0047AB;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #40E0D0;
+}
+
+::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+  color: #f44336;
+}
+
+.mat-raised-button.mat-primary {
+  background-color: #0047AB;
+}
+
+.mat-raised-button.mat-primary:hover {
+  background-color: #40E0D0;
+}
+
+a {
+  color: #FFD700;
+}
+
+a:hover {
+  color: #40E0D0;
+}
+
+mat-spinner {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.error-message {
+  margin-top: 10px;
+  color: #f44336;
+}

@@ -1,0 +1,83 @@
+/* Popup container */
+.popup-container {
+    padding: 16px;
+    max-width: 1300px;
+    height: 500px;
+  }
+  
+  /* Table card styling */
+  .table-card {
+    max-height: calc(5 * 48px + 60px); /* Adjusted height for 5 rows plus header and paginator */
+    overflow-y: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Card body adjustment */
+  .card-body {
+    padding: 0; /* Remove unnecessary padding */
+  }
+  
+  /* Paginator adjustments */
+  .mat-paginator {
+    margin-top: 8px;
+  }
+  
+  /* Form card styling */
+  .form-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Align form content and buttons */
+    height: 100%; /* Match the table's height */
+    padding: 16px;
+  }
+  
+  /* Form field adjustments */
+  .full-width {
+    width: 100%;
+  }
+  
+  /* Button group styling */
+  .button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+  
+  /* Table styling */
+  table {
+    width: 100%;
+  }
+  
+  .mat-column-id {
+    width: 70px;
+  }
+  
+  .mat-column-name {
+    flex: 1;
+  }
+  
+  /* General responsiveness */
+  @media screen and (max-width: 960px) {
+    .popup-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .form-card {
+      margin-top: 16px;
+      height: auto;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .button-group {
+      flex-direction: column;
+    }
+  
+    .button-group button {
+      width: 100%;
+    }
+  }
+  

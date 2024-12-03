@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="NomineroReforgedFinal.sqlite" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3307"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="NMN_PHASE" custom_title="0" dock_id="1" table="4,9:mainNMN_PHASE"/><dock_state state="000000ff00000000fd0000000100000002000002df000006e0fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000002df0000011e00ffffff0000027a0000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="NMN_CLIENT" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="39"/><column index="2" value="79"/><column index="3" value="167"/><column index="4" value="81"/><column index="5" value="82"/><column index="6" value="79"/><column index="7" value="73"/><column index="8" value="159"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="NMN_DEPARTAMENT" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="127"/><column index="3" value="81"/><column index="4" value="76"/><column index="5" value="236"/><column index="6" value="73"/><column index="7" value="159"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="NMN_PHASE" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="59"/><column index="3" value="95"/><column index="4" value="76"/><column index="5" value="74"/><column index="6" value="73"/><column index="7" value="159"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="NMN_PROJECTS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="63"/><column index="3" value="79"/><column index="4" value="40"/><column index="5" value="66"/><column index="6" value="87"/><column index="7" value="87"/><column index="8" value="207"/><column index="9" value="35"/><column index="10" value="77"/><column index="11" value="76"/><column index="12" value="74"/><column index="13" value="73"/><column index="14" value="159"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="NMN_REGISTERS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="35"/><column index="3" value="50"/><column index="4" value="43"/><column index="5" value="87"/><column index="6" value="35"/><column index="7" value="55"/><column index="8" value="207"/><column index="9" value="76"/><column index="10" value="74"/><column index="11" value="73"/><column index="12" value="159"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="NMN_TYPE_PRO_PHASE" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="3" value="60"/><column index="4" value="76"/><column index="5" value="74"/><column index="6" value="73"/><column index="7" value="159"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="NMN_USER" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="40"/><column index="3" value="58"/><column index="4" value="183"/><column index="5" value="95"/><column index="6" value="59"/><column index="7" value="91"/><column index="8" value="59"/><column index="9" value="81"/><column index="10" value="76"/><column index="11" value="74"/><column index="12" value="73"/><column index="13" value="159"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="NMN_USER_DEPARTMENT" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="64"/><column index="3" value="51"/><column index="4" value="81"/><column index="5" value="76"/><column index="6" value="159"/><column index="7" value="73"/><column index="8" value="159"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="NMN_USER_PROJECTS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="51"/><column index="3" value="67"/><column index="4" value="76"/><column index="5" value="74"/><column index="6" value="73"/><column index="7" value="71"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">-- Tabla NMN_USER
+CREATE TABLE NMN_USER (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    surname TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    is_admin BOOLEAN NOT NULL DEFAULT 0,
+    is_superadmin BOOLEAN NOT NULL DEFAULT 0,
+    is_active BOOLEAN NOT NULL DEFAULT 1,
+    delete_mark BOOLEAN NOT NULL DEFAULT 0,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME
+);
+
+-- Tabla NMN_DEPARTAMENT
+CREATE TABLE NMN_DEPARTAMENT (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    delete_mark BOOLEAN NOT NULL DEFAULT 0,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME
+);
+
+-- Tabla NMN_USER_DEPARTMENT
+CREATE TABLE NMN_USER_DEPARTMENT (
+    id INTEGER PRIMARY KEY,
+    id_depart INTEGER NOT NULL,
+    id_user INTEGER NOT NULL,
+    delete_mark BOOLEAN NOT NULL DEFAULT 0,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME,
+    FOREIGN KEY (id_depart) REFERENCES NMN_DEPARTAMENT (id),
+    FOREIGN KEY (id_user) REFERENCES NMN_USER (id)
+);
+
+-- Tabla NMN_PROJECTS
+CREATE TABLE NMN_PROJECTS (
+    id INTEGER PRIMARY KEY,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    client INTEGER NOT NULL,
+    estimated INTEGER NOT NULL, -- en minutos
+    date_start DATE NOT NULL,
+    date_end DATE,
+    description TEXT,
+    type INTEGER NOT NULL,
+    department INTEGER NOT NULL,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME,
+    FOREIGN KEY (client) REFERENCES NMN_CLIENT (id),
+    FOREIGN KEY (type) REFERENCES NMN_TYPE_PROJECT (id),
+    FOREIGN KEY (department) REFERENCES NMN_DEPARTAMENT (id)
+);
+
+-- Tabla NMN_TYPE_PROJECT
+CREATE TABLE NMN_TYPE_PROJECT (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME
+);
+
+-- Tabla NMN_TYPE_PRO_PHASE
+CREATE TABLE NMN_TYPE_PRO_PHASE (
+    id INTEGER PRIMARY KEY,
+    id_type_project INTEGER NOT NULL,
+    id_phase INTEGER NOT NULL,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME,
+    FOREIGN KEY (id_type_project) REFERENCES NMN_TYPE_PROJECT (id),
+    FOREIGN KEY (id_phase) REFERENCES NMN_PHASE (id)
+);
+
+-- Tabla NMN_CLIENT
+CREATE TABLE NMN_CLIENT (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    contact TEXT,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME
+);
+
+-- Tabla NMN_REGISTERS
+CREATE TABLE NMN_REGISTERS (
+    id INTEGER PRIMARY KEY,
+    user INTEGER NOT NULL,
+    project INTEGER NOT NULL,
+    phase INTEGER NOT NULL,
+    date DATE NOT NULL,
+    time FLOAT NOT NULL,
+    is_extra BOOLEAN NOT NULL DEFAULT 0,
+    coment TEXT,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME,
+    FOREIGN KEY (user) REFERENCES NMN_USER (id),
+    FOREIGN KEY (project) REFERENCES NMN_PROJECTS (id),
+    FOREIGN KEY (phase) REFERENCES NMN_PHASE (id)
+);
+
+-- Tabla NMN_PHASE
+CREATE TABLE NMN_PHASE (
+    id INTEGER PRIMARY KEY,
+    id_phase TEXT NOT NULL,
+    name TEXT NOT NULL,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME
+);
+
+-- Tabla NMN_USER_PROJECTS
+CREATE TABLE NMN_USER_PROJECTS (
+    id INTEGER PRIMARY KEY,
+    id_user INTEGER NOT NULL,
+    id_project INTEGER NOT NULL,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME,
+    FOREIGN KEY (id_user) REFERENCES NMN_USER (id),
+    FOREIGN KEY (id_project) REFERENCES NMN_PROJECTS (id)
+);
+</sql><sql name="SQL 2*">-- Insertar datos en NMN_USER
+INSERT INTO NMN_USER (id, name, surname, email, password, is_admin, is_superadmin, is_active, delete_mark, updated_by, updated_at, created_by, created_at)
+VALUES 
+(1, 'John', 'Doe', 'john.doe@example.com', 'password123', 1, 0, 1, 0, NULL, NULL, 1, DATETIME('now')),
+(2, 'Jane', 'Smith', 'jane.smith@example.com', 'password456', 0, 1, 1, 0, NULL, NULL, 1, DATETIME('now'));
+
+-- Insertar datos en NMN_CLIENT
+INSERT INTO NMN_CLIENT (id, name, contact, updated_by, updated_at, created_by, created_at)
+VALUES 
+(1, 'Client A', 'clientA@example.com', NULL, NULL, 1, DATETIME('now')),
+(2, 'Client B', 'clientB@example.com', NULL, NULL, 1, DATETIME('now'));
+
+-- Insertar datos en NMN_TYPE_PROJECT
+INSERT INTO NMN_TYPE_PROJECT (id, name, updated_by, updated_at, created_by, created_at)
+VALUES 
+(1, 'Web Development', NULL, NULL, 1, DATETIME('now')),
+(2, 'Mobile App', NULL, NULL, 1, DATETIME('now'));
+
+-- Insertar datos en NMN_DEPARTAMENT
+INSERT INTO NMN_DEPARTAMENT (id, name, delete_mark, updated_by, updated_at, created_by, created_at)
+VALUES 
+(1, 'Human Resources', 0, NULL, NULL, 1, DATETIME('now')),
+(2, 'Engineering', 0, NULL, NULL, 1, DATETIME('now'));
+
+-- Insertar datos en NMN_PROJECTS
+INSERT INTO NMN_PROJECTS (id, code, name, client, estimated, date_start, date_end, description, type, department, updated_by, updated_at, created_by, created_at)
+VALUES 
+(1, 'PROJ001', 'Project A', 1, 1200, '2024-01-01', '2024-12-31', 'Description for Project A', 1, 2, NULL, NULL, 1, DATETIME('now')),
+(2, 'PROJ002', 'Project B', 2, 2400, '2024-02-01', '2024-11-30', 'Description for Project B', 2, 1, NULL, NULL, 1, DATETIME('now'));
+
+-- Insertar datos en NMN_USER_DEPARTMENT
+INSERT INTO NMN_USER_DEPARTMENT (id, id_depart, id_user, delete_mark, updated_by, updated_at, created_by, created_at)
+VALUES 
+(1, 1, 1, 0, NULL, NULL, 1, DATETIME('now')),
+(2, 2, 2, 0, NULL, NULL, 1, DATETIME('now'));
+
+-- Insertar datos en NMN_PHASE
+INSERT INTO NMN_PHASE (id, id_phase, name, updated_by, updated_at, created_by, created_at)
+VALUES 
+(1, 'P001', 'Planning', NULL, NULL, 1, DATETIME('now')),
+(2, 'P002', 'Development', NULL, NULL, 1, DATETIME('now'));
+
+-- Insertar datos en NMN_TYPE_PRO_PHASE
+INSERT INTO NMN_TYPE_PRO_PHASE (id, id_type_project, id_phase, updated_by, updated_at, created_by, created_at)
+VALUES 
+(1, 1, 1, NULL, NULL, 1, DATETIME('now')),
+(2, 2, 2, NULL, NULL, 1, DATETIME('now'));
+
+-- Insertar datos en NMN_REGISTERS
+INSERT INTO NMN_REGISTERS (id, user, project, phase, date, time, is_extra, coment, updated_by, updated_at, created_by, created_at)
+VALUES 
+(1, 1, 1, 1, '2024-11-30', 8.5, 0, 'Work on initial setup', NULL, NULL, 1, DATETIME('now')),
+(2, 2, 2, 2, '2024-11-30', 4.0, 1, 'Extra hours for debugging', NULL, NULL, 1, DATETIME('now'));
+
+-- Insertar datos en NMN_USER_PROJECTS
+INSERT INTO NMN_USER_PROJECTS (id, id_user, id_project, updated_by, updated_at, created_by, created_at)
+VALUES 
+(1, 1, 1, NULL, NULL, 1, DATETIME('now')),
+(2, 2, 2, NULL, NULL, 1, DATETIME('now'));
+</sql><current_tab id="1"/></tab_sql></sqlb_project>

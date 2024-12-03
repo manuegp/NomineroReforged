@@ -1,0 +1,139 @@
+-- Tabla NMN_USER
+CREATE TABLE nmn_user (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    surname TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    is_admin BOOLEAN NOT NULL DEFAULT 0,
+    is_superadmin BOOLEAN NOT NULL DEFAULT 0,
+    is_active BOOLEAN NOT NULL DEFAULT 1,
+    delete_mark BOOLEAN NOT NULL DEFAULT 0,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME
+);
+
+-- Tabla NMN_DEPARTAMENT
+CREATE TABLE nmn_departament (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    delete_mark BOOLEAN NOT NULL DEFAULT 0,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME
+);
+
+-- Tabla NMN_USER_DEPARTMENT
+CREATE TABLE nmn_user_department (
+    id INTEGER PRIMARY KEY,
+    id_depart INTEGER NOT NULL,
+    id_user INTEGER NOT NULL,
+    delete_mark BOOLEAN NOT NULL DEFAULT 0,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME,
+    FOREIGN KEY (id_depart) REFERENCES nmn_departament (id),
+    FOREIGN KEY (id_user) REFERENCES nmn_user (id)
+);
+
+-- Tabla NMN_PROJECTS
+CREATE TABLE nmn_projects (
+    id INTEGER PRIMARY KEY,
+    code TEXT NOT NULL,
+    name TEXT NOT NULL,
+    client INTEGER NOT NULL,
+    estimated INTEGER NOT NULL, -- en minutos
+    date_start DATE NOT NULL,
+    date_end DATE,
+    description TEXT,
+    type INTEGER NOT NULL,
+    department INTEGER NOT NULL,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME,
+    FOREIGN KEY (client) REFERENCES nmn_client (id),
+    FOREIGN KEY (type) REFERENCES nmn_type_project (id),
+    FOREIGN KEY (department) REFERENCES nmn_departament (id)
+);
+
+-- Tabla NMN_TYPE_PROJECT
+CREATE TABLE nmn_type_project (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME
+);
+
+-- Tabla NMN_TYPE_PRO_PHASE
+CREATE TABLE nmn_type_pro_phase (
+    id INTEGER PRIMARY KEY,
+    id_type_project INTEGER NOT NULL,
+    id_phase INTEGER NOT NULL,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME,
+    FOREIGN KEY (id_type_project) REFERENCES nmn_type_project (id),
+    FOREIGN KEY (id_phase) REFERENCES nmn_phase (id)
+);
+
+-- Tabla NMN_CLIENT
+CREATE TABLE nmn_client (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    contact TEXT,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME
+);
+
+-- Tabla NMN_REGISTERS
+CREATE TABLE nmn_registers (
+    id INTEGER PRIMARY KEY,
+    user INTEGER NOT NULL,
+    project INTEGER NOT NULL,
+    phase INTEGER NOT NULL,
+    date DATE NOT NULL,
+    time FLOAT NOT NULL,
+    is_extra BOOLEAN NOT NULL DEFAULT 0,
+    coment TEXT,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME,
+    FOREIGN KEY (user) REFERENCES nmn_user (id),
+    FOREIGN KEY (project) REFERENCES nmn_projects (id),
+    FOREIGN KEY (phase) REFERENCES nmn_phase (id)
+);
+
+-- Tabla NMN_PHASE
+CREATE TABLE nmn_phase (
+    id INTEGER PRIMARY KEY,
+    id_phase TEXT NOT NULL,
+    name TEXT NOT NULL,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME
+);
+
+-- Tabla NMN_USER_PROJECTS
+CREATE TABLE nmn_user_projects (
+    id INTEGER PRIMARY KEY,
+    id_user INTEGER NOT NULL,
+    id_project INTEGER NOT NULL,
+    updated_by INTEGER,
+    updated_at DATETIME,
+    created_by INTEGER,
+    created_at DATETIME,
+    FOREIGN KEY (id_user) REFERENCES nmn_user (id),
+    FOREIGN KEY (id_project) REFERENCES nmn_projects (id)
+);

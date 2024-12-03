@@ -1,1 +1,57 @@
-<p>login works!</p>
+<div class="login-container d-flex align-items-center justify-content-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-10">
+        <div class="card rounded-3 shadow">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <div class="card-body p-md-5 mx-md-4">
+                <div class="text-center mb-5">
+                  <h4 class="mt-1 mb-5 pb-1">Bienvenido a NomineroReforged</h4>
+                </div>
+
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                  <p class="mb-4">Por favor, inicia sesión en tu cuenta</p>
+
+                  <mat-form-field appearance="outline" class="w-100 mb-3">
+                    <mat-label>Correo electrónico</mat-label>
+                    <input matInput type="email" formControlName="email" required [disabled]="isLoading">
+                    <mat-error *ngIf="loginForm.get('email')?.hasError('required')">El correo electrónico es requerido</mat-error>
+                    <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Por favor, ingrese un correo electrónico válido</mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="w-100 mb-3">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput type="password" formControlName="password" required [disabled]="isLoading">
+                    <mat-error *ngIf="loginForm.get('password')?.hasError('required')">La contraseña es requerida</mat-error>
+                    <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">La contraseña debe tener al menos 6 caracteres</mat-error>
+                  </mat-form-field>
+
+                  <div class="text-center pt-1 mb-5 pb-1">
+                    <button mat-raised-button color="primary" class="w-100 mb-3" type="submit" [disabled]="loginForm.invalid || isLoading">
+                      <mat-spinner diameter="20" *ngIf="isLoading" class="mr-2"></mat-spinner>
+                      <span *ngIf="!isLoading">Iniciar sesión</span>
+                    </button>
+                    <a class="text-muted" href="#!">¿Olvidaste tu contraseña?</a>
+                  </div>
+
+                  <mat-error *ngIf="errorMessage" class="text-center">
+                    {{ errorMessage }}
+                  </mat-error>
+                </form>
+              </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center gradient-custom">
+              <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                <h4 class="mb-4">Somos más que una empresa</h4>
+                <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,141 @@
+<div class="user-list-container">
+  <div class="filters-container">
+    <div class="filters-group">
+      <!-- Filtro de búsqueda -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Buscar</mat-label>
+        <input matInput [(ngModel)]="filterValue" (ngModelChange)="applyFilters()" placeholder="Nombre, apellido o email">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <!-- Filtro de rol -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Rol</mat-label>
+        <mat-select [(ngModel)]="selectedRole" (ngModelChange)="applyFilters()">
+          <mat-option [value]="null">Todos</mat-option>
+          <mat-option *ngFor="let role of roles" [value]="role.value">
+            {{role.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Filtro de estado -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Estado</mat-label>
+        <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="applyFilters()">
+          <mat-option [value]="null">Todos</mat-option>
+          <mat-option [value]="1">Activo</mat-option>
+          <mat-option [value]="0">Inactivo</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Filtro de departamento -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Departamento</mat-label>
+        <mat-select [(ngModel)]="selectedDepartment" (ngModelChange)="applyFilters()">
+          <mat-option [value]="null">Todos</mat-option>
+          <mat-option *ngFor="let department of departments" [value]="department.name">
+            {{department.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Botón para limpiar filtros -->
+      <button mat-stroked-button color="primary" (click)="clearFilters()" class="clear-button filter-action-button">
+        <mat-icon>clear</mat-icon>
+        Limpiar filtros
+      </button>
+    </div>
+
+    <!-- Botón para añadir usuario -->
+    <button mat-raised-button color="primary" (click)="openDepartmentPopUp()" class="add-button">
+      <mat-icon>list</mat-icon>
+      Gestionar departamentos
+    </button>
+    <button mat-raised-button color="primary" (click)="openUserForm()" class="add-button">
+      <mat-icon>add</mat-icon>
+      Añadir Usuario
+    </button>
+  </div>
+
+  <!-- Tabla de usuarios -->
+  <div class="table-responsive">
+    <table mat-table [dataSource]="displayedUsers" class="mat-elevation-z8">
+      <!-- Columna: ID -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let user">{{user.id}}</td>
+      </ng-container>
+
+      <!-- Columna: Nombre -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let user">{{user.name}}</td>
+      </ng-container>
+
+      <!-- Columna: Apellido -->
+      <ng-container matColumnDef="surname">
+        <th mat-header-cell *matHeaderCellDef>Apellido</th>
+        <td mat-cell *matCellDef="let user">{{user.surname}}</td>
+      </ng-container>
+
+      <!-- Columna: Email -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let user">{{user.email}}</td>
+      </ng-container>
+
+      <!-- Columna: Departamento -->
+      <ng-container matColumnDef="departament">
+        <th mat-header-cell *matHeaderCellDef>Departamento</th>
+        <td mat-cell *matCellDef="let user">{{user.department_name}}</td>
+      </ng-container>
+
+      <!-- Columna: Rol -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Rol</th>
+        <td mat-cell *matCellDef="let user">{{user | role}}</td>
+      </ng-container>
+
+      <!-- Columna: Activo -->
+      <ng-container matColumnDef="is_active">
+        <th mat-header-cell *matHeaderCellDef>Activo</th>
+        <td mat-cell *matCellDef="let user">
+          <mat-icon [ngClass]="{'active': user.is_active === 1, 'inactive': user.is_active === 0}">
+            {{user.is_active === 1 ? 'check_circle' : 'cancel'}}
+          </mat-icon>
+        </td>
+      </ng-container>
+
+      <!-- Columna: Acciones -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let user">
+          <div class="action-buttons">
+            <!-- Botón para editar usuario -->
+            <button mat-icon-button color="primary" (click)="openUserForm(user)" matTooltip="Editar">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <!-- Botón para eliminar usuario -->
+            <button mat-icon-button color="warn" (click)="deleteUser(user.id)" matTooltip="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Cabecera de la tabla -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <!-- Filas de la tabla -->
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Paginador -->
+    <mat-paginator [pageSizeOptions]="pageSizeOptions" 
+                   [pageSize]="pageSize"
+                   showFirstLastButtons 
+                   aria-label="Seleccionar página de usuarios"
+                   (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+</div>

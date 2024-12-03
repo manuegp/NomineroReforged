@@ -1,0 +1,19 @@
+/* user-form.component.css */
+.full-width {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  mat-dialog-content {
+    min-width: 300px;
+  }
+  
+  mat-dialog-actions {
+    justify-content: flex-end;
+  }
+  
+  @media (max-width: 400px) {
+    mat-dialog-content {
+      min-width: 250px;
+    }
+  }
