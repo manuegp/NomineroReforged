@@ -1,0 +1,80 @@
+<div class="container client-container">
+    <div class="row">
+      <!-- Tabla -->
+      <div class="col-md-7">
+        <div class="card table-card">
+          <div class="card-body">
+            <table mat-table [dataSource]="paginatedPhases" class="mat-elevation-z8">
+              <!-- Columnas -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let phase">{{ phase.id }}</td>
+              </ng-container>
+              <ng-container matColumnDef="id_phase">
+                <th mat-header-cell *matHeaderCellDef>Codigo fase</th>
+                <td mat-cell *matCellDef="let phase">{{ phase.id_phase }}</td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let phase">{{ phase.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                <td mat-cell *matCellDef="let phase">
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="deleteClient(phase.id)"
+                    matTooltip="Eliminar"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectPhase(row)">
+              </tr>
+            </table>
+            <mat-paginator
+            [length]="totalPhases"
+              [pageSizeOptions]="[5]"
+              [pageSize]="10"
+              aria-label="Paginación de clientes"
+              (page)="onPageChange($event)"
+            >
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Formulario -->
+      <div class="col-md-5">
+        <div class="card form-card">
+          <div class="card-body">
+            <form [formGroup]="phaseForm">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Codigo de fase</mat-label>
+                <input matInput formControlName="id_phase" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="name" />
+              </mat-form-field>
+            </form>
+          </div>
+          <div class="button-group">
+            <button
+              mat-raised-button
+              color="primary"
+              [disabled]="!phaseForm.valid"
+              (click)="savePhase()"
+            >
+              {{ selectedPhase ? 'Actualizar' : 'Guardar' }}
+            </button>
+            <button mat-raised-button color="accent" (click)="addNewPhase()">Nuevo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

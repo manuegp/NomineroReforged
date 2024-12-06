@@ -9,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { Department } from '../../../models/department.model';
 import { DepartmentService } from '../../../services/deparments.service';
+import { SnackbarService } from '../../../snackbar/snackbar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-departments-popup',
@@ -43,7 +45,8 @@ export class DepartmentsPopupComponent implements OnInit {
     public dialogRef: MatDialogRef<DepartmentsPopupComponent>,
     private departmentService: DepartmentService,
     @Inject(MAT_DIALOG_DATA) public data: Department[] | null,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackbar: SnackbarService
   ) {
     this.departmentForm = this.fb.group({
       id: [{ value: '', disabled: true }],
@@ -85,10 +88,11 @@ export class DepartmentsPopupComponent implements OnInit {
             next: () => {
               console.log('Departamento actualizado');
               this.loadDepartments();
+              this.snackbar.openSnackbar("Departamento actualizado", "snackbar-success", 3000)
             },
             error: (err) => {
               console.error('Error al actualizar departamento:', err);
-              alert('No se pudo actualizar el departamento. Inténtalo nuevamente.');
+              this.snackbar.openSnackbar("No se ha podido actualizar el departamento", "snackbar-danger", 3000)
             },
           });
       } else {
@@ -96,10 +100,11 @@ export class DepartmentsPopupComponent implements OnInit {
           next: () => {
             console.log('Departamento creado');
             this.loadDepartments();
+            this.snackbar.openSnackbar("Departamento creado", "snackbar-success", 3000)
           },
           error: (err) => {
             console.error('Error al crear departamento:', err);
-            alert('No se pudo crear el departamento. Inténtalo nuevamente.');
+            this.snackbar.openSnackbar("No se ha podido crear el departamento", "snackbar-danger", 3000)
           },
         });
       }
@@ -120,6 +125,26 @@ export class DepartmentsPopupComponent implements OnInit {
   closePopup(): void {
     this.dialogRef.close(this.departments);
   }
+
+  deleteDepartment(): void {
+    if (this.selectedDepartment?.id) {
+      this.departmentService.deleteDepartment(this.selectedDepartment.id).subscribe({
+        next: () => {
+          console.log('Departamento borrado');
+          this.loadDepartments();
+          this.snackbar.openSnackbar('Departamento borrado', 'snackbar-success', 3000);
+        },
+        error: (err) => {
+          console.error('Error al borrar departamento:', err);
+          const errorMessage = err.message; // Captura el mensaje procesado por handleError
+          this.snackbar.openSnackbar(errorMessage, 'snackbar-danger', 3000);
+        },
+      });
+    } else {
+      this.snackbar.openSnackbar('No hay un departamento seleccionado para borrar', 'snackbar-warning', 3000);
+    }
+  }
+  
 
   // Actualizar departamentos mostrados según la página
   updatePaginatedDepartments(): void {

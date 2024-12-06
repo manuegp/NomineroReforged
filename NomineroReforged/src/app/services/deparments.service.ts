@@ -51,14 +51,20 @@ export class DepartmentService {
   // Manejo de errores
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An unknown error occurred!';
+  
     if (error.error instanceof ErrorEvent) {
       // Error del cliente o de red
       errorMessage = `Client-side error: ${error.error.message}`;
     } else {
       // Error del backend
-      errorMessage = `Server-side error: ${error.status}\nMessage: ${error.message}`;
+      if (error.error && error.error.message) {
+        errorMessage = error.error.message; // Captura el mensaje personalizado del backend
+      } else {
+        errorMessage = `Server-side error: ${error.status} - ${error.statusText}`;
+      }
     }
-    console.error(errorMessage);
-    return throwError(() => new Error(errorMessage)); // Retorna un error observable
+  
+    console.error('Error capturado:', errorMessage);
+    return throwError(() => new Error(errorMessage)); // Retorna un error observable con el mensaje detallado
   }
-}
+}  

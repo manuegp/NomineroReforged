@@ -1,0 +1,18 @@
+.client-container {
+    padding: 16px;
+  }
+  
+  .table-card {
+    margin-bottom: 16px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+  

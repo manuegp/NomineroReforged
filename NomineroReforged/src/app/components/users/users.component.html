@@ -131,8 +131,10 @@
     </table>
 
     <!-- Paginador -->
-    <mat-paginator [pageSizeOptions]="pageSizeOptions" 
-                   [pageSize]="pageSize"
+    <mat-paginator 
+                   [length]="totalUsers"
+                   [pageSizeOptions]="pageSizeOptions" 
+                   [pageSize]="5"
                    showFirstLastButtons 
                    aria-label="Seleccionar página de usuarios"
                    (page)="onPageChange($event)">

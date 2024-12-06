@@ -21,7 +21,7 @@
             <mat-paginator
               [length]="totalDepartments"
               [pageSize]="pageSize"
-              [pageSizeOptions]="[5, 10, 20]"
+              [pageSizeOptions]="[5]"
               showFirstLastButtons
               aria-label="Paginación de departamentos"
               (page)="onPageChange($event)"
@@ -51,6 +51,7 @@
             >
               {{ selectedDepartment ? 'Actualizar' : 'Guardar' }}
             </button>
+            <button mat-raised-button color="warn" [disabled]="!departmentForm.valid" (click)="deleteDepartment()">Borrar</button>
             <button mat-raised-button color="accent" (click)="addNewDepartment()">Nuevo</button>
             <button mat-raised-button color="warn" (click)="closePopup()">Cerrar</button>
           </div>

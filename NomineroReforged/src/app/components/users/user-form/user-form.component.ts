@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { DepartmentService } from '../../../services/deparments.service'; // Asegúrate de que la ruta es correcta
 import { Department } from '../../../models/department.model'; // Modelo de departamentos
 import { UserService } from '../../../services/user.service';
+import { SnackbarService } from '../../../snackbar/snackbar';
 
 @Component({
   selector: 'app-user-form',
@@ -46,6 +47,7 @@ export class UserFormComponent implements OnInit {
     private departmentService: DepartmentService,
     private userService: UserService,
     public dialogRef: MatDialogRef<UserFormComponent>,
+    private snackbar: SnackbarService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -150,22 +152,25 @@ export class UserFormComponent implements OnInit {
       this.userService.updateUser(this.data.user.id, formData).subscribe({
         next: (response) => {
           console.log('Usuario actualizado:', response);
+          this.snackbar.openSnackbar("Usuario actualizado", "snackbar-success", 3000)
           this.dialogRef.close(formData); // Cerrar el diálogo solo si la respuesta es exitosa
         },
         error: (err) => {
           console.error('Error al actualizar usuario:', err);
-          alert('No se pudo actualizar el usuario. Inténtalo nuevamente.');
+          this.snackbar.openSnackbar("No se ha podido actualuizar usuario", "snackbar-danger", 3000)
+
         },
       });
     }else{
       this.userService.createUser(formData).subscribe({
         next: (response) => {
           console.log('Usuario creado:', response);
+          this.snackbar.openSnackbar("Usuario creado", "snackbar-success", 3000)
           this.dialogRef.close(formData); // Cerrar el diálogo solo si la respuesta es exitosa
         },
         error: (err) => {
           console.error('Error al crear usuario:', err);
-          alert('No se pudo crear el usuario. Inténtalo nuevamente.');
+          this.snackbar.openSnackbar("No se ha podido crear usuario", "snackbar-danger", 3000)
         },
       });
     }

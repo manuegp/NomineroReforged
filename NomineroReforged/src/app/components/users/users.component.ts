@@ -17,6 +17,7 @@ import { RolePipe } from '../../pipes/role.pipe';
 import { DepartmentService } from '../../services/deparments.service';
 import { Department } from '../../models/department.model';
 import { DepartmentsPopupComponent } from './departments-popup/departments-popup.component';
+import { SnackbarService } from '../../snackbar/snackbar';
 
 @Component({
   selector: 'app-users',
@@ -46,8 +47,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
   selectedRole: number | null = null;
   selectedStatus: boolean | null = null;
   displayedColumns: string[] = ['id', 'name', 'surname', 'email', 'role', 'departament','is_active','actions'];
-  pageSize = 10;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
+  pageSizeOptions: number[] = [5,10,15,20];
+  totalUsers= 0;
   departments: { name: string }[] = [];
 
   roles = [
@@ -64,7 +65,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
   constructor(
     private userService: UserService,
     private deparmentService: DepartmentService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackbar: SnackbarService
   ) { }
 
   ngOnInit() {
@@ -82,10 +84,12 @@ export class UsersComponent implements OnInit, AfterViewInit {
     this.userService.getAllUsers().subscribe(
       (users) => {
         this.users = users;
+        this.totalUsers = users.length;
         this.applyFilters();
       },
       (error) => {
         console.error('Error al cargar usuarios:', error);
+        this.snackbar.openSnackbar("Error al cargar usuario", "snackbar-danger", 3000)
       }
     );
   }
@@ -180,6 +184,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
         this.departments = departments.map((d:any) => ({id: d.id ,name: d.name }));
       },
       error: (err:any) => {
+        this.snackbar.openSnackbar("Error al cargar departamentos", "snackbar-danger", 3000)
+
         console.error('Error loading departments:', err);
       },
     });
@@ -192,6 +198,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
           this.loadUsers();
         },
         (error) => {
+        this.snackbar.openSnackbar("Error al eliminar usuario", "snackbar-danger", 3000)
+
           console.error('Error al eliminar usuario:', error);
         }
       );

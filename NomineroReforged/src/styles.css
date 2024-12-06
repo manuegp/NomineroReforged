@@ -1,15 +1,31 @@
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
 
 :root {
-  --primary-color: #0047AB;
-  --secondary-color: #40E0D0;
-  --accent-color: #FFD700;
+  --primary-color: #0047ab;
+  --secondary-color: #40e0d0;
+  --accent-color: #ffd700;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+  .snackbar-success {
+    --mdc-snackbar-container-color: green;      
+  }
+  .snackbar-warning {
+    --mdc-snackbar-container-color: yellow;      
+  }
+  .snackbar-danger {
+    --mdc-snackbar-container-color: red;      
+  }
+  .snackbar-info {
+    --mdc-snackbar-container-color: rgb(76, 136, 216);      
+  }
 }

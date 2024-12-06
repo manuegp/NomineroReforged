@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../enviroments/enviroment';
-import * as bcrypt from 'bcryptjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 export interface LoginResponse {
   message: string;
@@ -11,15 +11,17 @@ export interface LoginResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/users/`;
 
+  constructor(private jwtHelper: JwtHelperService) {}
+
   async login(email: string, password: string): Promise<Observable<LoginResponse>> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
-      tap(response => {
+      tap((response) => {
         this.setToken(response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
       })
@@ -32,7 +34,23 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+    return !!token && !this.jwtHelper.isTokenExpired(token);
+  }
+
+  getRoleFromToken(): string | null {
+    const token = this.getToken();
+    if (token) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      if (decodedToken.is_admin == 1 && decodedToken.is_superadmin == 0) {
+        return 'Admin';
+      } else if (decodedToken.is_admin == 0 && decodedToken.is_superadmin == 1) {
+        return 'Superadmin';
+      } else {
+        return 'Empleado';
+      }
+    }
+    return null;
   }
 
   getToken(): string | null {

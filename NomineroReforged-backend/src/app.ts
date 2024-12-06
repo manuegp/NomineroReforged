@@ -67,7 +67,7 @@ const clientController = new ClientController(clientService);
 app.use('/api/users', userRoutes(userController));
 app.use('/api/departments', departmentRoutes(departmentController, departmentService)); 
 app.use('/api/clients', clientRoutes(clientController)); 
-app.use('/api/phase', phaseRoutes(phaseController)); 
+app.use('/api/phases', phaseRoutes(phaseController)); 
 // Error handling middleware
 app.use(errorHandler);
 
