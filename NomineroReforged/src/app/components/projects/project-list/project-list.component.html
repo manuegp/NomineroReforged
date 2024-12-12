@@ -1,120 +1,210 @@
 <div class="container mt-3">
-    <div class="row">
-      <!-- Table Section -->
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">Proyectos</div>
-          <div class="card-body">
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-              <!-- Columns -->
-              <ng-container matColumnDef="code">
-                <th mat-header-cell *matHeaderCellDef>Code</th>
-                <td mat-cell *matCellDef="let project">{{ project.code }}</td>
-              </ng-container>
-  
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let project">{{ project.name }}</td>
-              </ng-container>
-  
-              <ng-container matColumnDef="client">
-                <th mat-header-cell *matHeaderCellDef>Client</th>
-                <td mat-cell *matCellDef="let project">{{ project.client }}</td>
-              </ng-container>
-  
-              <ng-container matColumnDef="estimated">
-                <th mat-header-cell *matHeaderCellDef>Estimated</th>
-                <td mat-cell *matCellDef="let project">{{ project.estimated }}</td>
-              </ng-container>
-  
-              <ng-container matColumnDef="date_start">
-                <th mat-header-cell *matHeaderCellDef>Start Date</th>
-                <td mat-cell *matCellDef="let project">{{ project.date_start }}</td>
-              </ng-container>
-  
-              <ng-container matColumnDef="date_end">
-                <th mat-header-cell *matHeaderCellDef>End Date</th>
-                <td mat-cell *matCellDef="let project">{{ project.date_end || '-' }}</td>
-              </ng-container>
-  
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let project">
-                  
-                  <button mat-icon-button color="warn" (click)="deleteProject(project.id)">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </ng-container>
-  
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectProject(row)"></tr>
-            </table>
-            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
-          </div>
+  <div class="row">
+    <!-- Table Section -->
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">Proyectos</div>
+        <div class="card-body">
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <!-- Columns -->
+            <ng-container matColumnDef="code">
+              <th mat-header-cell *matHeaderCellDef>Codigo</th>
+              <td mat-cell *matCellDef="let project">{{ project.code }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Nombre</th>
+              <td mat-cell *matCellDef="let project">{{ project.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="client">
+              <th mat-header-cell *matHeaderCellDef>Cliente</th>
+              <td mat-cell *matCellDef="let project">{{ project.client }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="department">
+              <th mat-header-cell *matHeaderCellDef>Departamento</th>
+              <td mat-cell *matCellDef="let project">{{ getDepartmentName(project.department) }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="estimated">
+              <th mat-header-cell *matHeaderCellDef>Estimado</th>
+              <td mat-cell *matCellDef="let project">
+                {{ project.estimated }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date_start">
+              <th mat-header-cell *matHeaderCellDef>Fecha Inicio</th>
+              <td mat-cell *matCellDef="let project">
+                {{ project.date_start }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date_end">
+              <th mat-header-cell *matHeaderCellDef>Fecha Final</th>
+              <td mat-cell *matCellDef="let project">
+                {{ project.date_end || "-" }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Acciones</th>
+              <td mat-cell *matCellDef="let project">
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="deleteProject(project.id)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              (click)="selectProject(row)"
+            ></tr>
+          </table>
+          <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
         </div>
       </div>
     </div>
-      <!-- Form Section -->
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">{{ selectedProject ? 'Edit Project' : 'New Project' }}</div>
-          <div class="card-body">
-            <form [formGroup]="projectForm">
-                <!-- Código -->
+  </div>
+  <!-- Form Section -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          {{ selectedProject ? "Editar Proyecto" : "Nuevo Proyecto" }}
+        </div>
+        <div class="card-body">
+          <form [formGroup]="projectForm">
+            <div class="row">
+              <!-- Código -->
+              <div class="col-md-3">
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Code</mat-label>
+                  <mat-label>Codigo</mat-label>
                   <input matInput formControlName="code" />
                 </mat-form-field>
-              
-                <!-- Nombre -->
+              </div>
+              <!-- Nombre -->
+              <div class="col-md-3">
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Name</mat-label>
+                  <mat-label>Nombre</mat-label>
                   <input matInput formControlName="name" />
                 </mat-form-field>
-              
-                <!-- Cliente -->
+              </div>
+              <!-- Cliente -->
+              <div class="col-md-3">
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Client</mat-label>
-                  <input matInput type="number" formControlName="client" />
+                  <mat-label>Cliente</mat-label>
+                  <mat-select
+                    formControlName="client"
+                    [disabled]="clients.length === 0"
+                  >
+                    <mat-option
+                      *ngFor="let client of clients"
+                      [value]="client.id"
+                    >
+                      {{ client.name }}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
-              
-                <!-- Estimado -->
+              </div>
+              <!-- Tipo -->
+              <div class="col-md-3">
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Estimated</mat-label>
-                  <input matInput type="number" formControlName="estimated" />
+                  <mat-label>Tipo</mat-label>
+                  <mat-select
+                    formControlName="type"
+                    [disabled]="types.length === 0"
+                  >
+                    <mat-option
+                      *ngFor="let type of types"
+                      [value]="type.id"
+                    >
+                      {{ type.name }}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
-              
-                <!-- Fecha de inicio -->
+              </div>
+              <!-- Departamento -->
+              <div class="col-md-3">
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Start Date</mat-label>
-                  <input matInput type="date" formControlName="date_start" />
+                  <mat-label>Departamento</mat-label>
+                  <mat-select
+                    formControlName="department"
+                    [disabled]="departments.length === 0"
+                  >
+                    <mat-option
+                      *ngFor="let department of departments"
+                      [value]="department.id"
+                    >
+                      {{ department.name }}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
-              
-                <!-- Fecha de fin -->
+              </div>
+              <!-- Estimado -->
+              <div class="col-md-3">
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>End Date</mat-label>
-                  <input matInput type="date" formControlName="date_end" />
+                  <mat-label>Estimacion (horas)</mat-label>
+                  <input matInput type="number" min="1" max="9999" formControlName="estimated" />
                 </mat-form-field>
-              
-                <!-- Descripción -->
+              </div>
+              <!-- Fecha de inicio -->
+              <div class="col-md-3">
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Description</mat-label>
+                  <mat-label>Fecha Inicio</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="startPicker"
+                    formControlName="date_start"
+                  />
+                  <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #startPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <!-- Fecha de fin -->
+              <div class="col-md-3">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Fecha Final</mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="endPicker"
+                    formControlName="date_end"
+                  />
+                  <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #endPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <!-- Descripción -->
+              <div class="col-md-12">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Descripción</mat-label>
                   <textarea matInput formControlName="description"></textarea>
                 </mat-form-field>
-              </form>
-              
-          </div>
-          <div class="card-footer d-flex justify-content-between">
-            <button mat-raised-button color="primary" [disabled]="!projectForm.valid" (click)="saveProject()">
-              {{ selectedProject ? 'Update' : 'Save' }}
-            </button>
-            <button mat-raised-button color="warn" (click)="resetForm()">Reset</button>
-          </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="!projectForm.valid"
+            (click)="saveProject()"
+          >
+            {{ selectedProject ? "Actualizar" : "Guardar" }}
+          </button>
+          <button mat-raised-button color="primary" (click)="newForm()">
+            Nuevo
+          </button>
         </div>
       </div>
     </div>
-  
+  </div>
 </div>
-  

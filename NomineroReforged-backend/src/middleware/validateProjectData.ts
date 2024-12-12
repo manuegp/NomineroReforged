@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../utils/errorHandler';
 
 export const validateProjectData = (req: Request, res: Response, next: NextFunction) => {
-  const { code, name, client, estimated, date_start, type, department } = req.body;
+  const { code, name, client, estimated, type, department } = req.body;
 
-  if (!code || !name || !client || !estimated || !date_start || !type || !department) {
+  if (!code || !name || !client || !estimated  || !type || !department) {
     return next(new AppError('Missing required fields', 400));
   }
 
