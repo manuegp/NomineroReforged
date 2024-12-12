@@ -1,7 +1,11 @@
-<mat-tab-group [selectedIndex]="activeTabIndex" (selectedIndexChange)="onTabChange($event)">
+<mat-tab-group
+  [selectedIndex]="activeTabIndex"
+  (selectedIndexChange)="onTabChange($event)"
+>
   <mat-tab label="Proyectos"></mat-tab>
   <mat-tab label="Tipos"></mat-tab>
   <mat-tab label="Phases"></mat-tab>
 </mat-tab-group>
-
-<router-outlet></router-outlet>
+<div class="mt-2">
+  <router-outlet></router-outlet>
+</div>

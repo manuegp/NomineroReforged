@@ -1,0 +1,46 @@
+.container.phases-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .table-card,
+  .form-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .table-card {
+    width: 100%;
+  }
+  
+  .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+  

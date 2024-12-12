@@ -37,8 +37,8 @@
             </table>
             <mat-paginator
             [length]="totalPhases"
-              [pageSizeOptions]="[5]"
-              [pageSize]="10"
+              [pageSizeOptions]="[5, 10]"
+              [pageSize]="5"
               aria-label="Paginación de clientes"
               (page)="onPageChange($event)"
             >

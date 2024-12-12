@@ -1,1 +1,120 @@
-<p>project-list works!</p>
+<div class="container mt-3">
+    <div class="row">
+      <!-- Table Section -->
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">Proyectos</div>
+          <div class="card-body">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+              <!-- Columns -->
+              <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef>Code</th>
+                <td mat-cell *matCellDef="let project">{{ project.code }}</td>
+              </ng-container>
+  
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let project">{{ project.name }}</td>
+              </ng-container>
+  
+              <ng-container matColumnDef="client">
+                <th mat-header-cell *matHeaderCellDef>Client</th>
+                <td mat-cell *matCellDef="let project">{{ project.client }}</td>
+              </ng-container>
+  
+              <ng-container matColumnDef="estimated">
+                <th mat-header-cell *matHeaderCellDef>Estimated</th>
+                <td mat-cell *matCellDef="let project">{{ project.estimated }}</td>
+              </ng-container>
+  
+              <ng-container matColumnDef="date_start">
+                <th mat-header-cell *matHeaderCellDef>Start Date</th>
+                <td mat-cell *matCellDef="let project">{{ project.date_start }}</td>
+              </ng-container>
+  
+              <ng-container matColumnDef="date_end">
+                <th mat-header-cell *matHeaderCellDef>End Date</th>
+                <td mat-cell *matCellDef="let project">{{ project.date_end || '-' }}</td>
+              </ng-container>
+  
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let project">
+                  
+                  <button mat-icon-button color="warn" (click)="deleteProject(project.id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+  
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectProject(row)"></tr>
+            </table>
+            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+      <!-- Form Section -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">{{ selectedProject ? 'Edit Project' : 'New Project' }}</div>
+          <div class="card-body">
+            <form [formGroup]="projectForm">
+                <!-- Código -->
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Code</mat-label>
+                  <input matInput formControlName="code" />
+                </mat-form-field>
+              
+                <!-- Nombre -->
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Name</mat-label>
+                  <input matInput formControlName="name" />
+                </mat-form-field>
+              
+                <!-- Cliente -->
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Client</mat-label>
+                  <input matInput type="number" formControlName="client" />
+                </mat-form-field>
+              
+                <!-- Estimado -->
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Estimated</mat-label>
+                  <input matInput type="number" formControlName="estimated" />
+                </mat-form-field>
+              
+                <!-- Fecha de inicio -->
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Start Date</mat-label>
+                  <input matInput type="date" formControlName="date_start" />
+                </mat-form-field>
+              
+                <!-- Fecha de fin -->
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>End Date</mat-label>
+                  <input matInput type="date" formControlName="date_end" />
+                </mat-form-field>
+              
+                <!-- Descripción -->
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Description</mat-label>
+                  <textarea matInput formControlName="description"></textarea>
+                </mat-form-field>
+              </form>
+              
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <button mat-raised-button color="primary" [disabled]="!projectForm.valid" (click)="saveProject()">
+              {{ selectedProject ? 'Update' : 'Save' }}
+            </button>
+            <button mat-raised-button color="warn" (click)="resetForm()">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+</div>
+  

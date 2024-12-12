@@ -1,1 +1,106 @@
-<p>types works!</p>
+<div class="container client-container">
+  <div class="row">
+    <!-- Tabla -->
+    <div class="col-md-7">
+      <div class="card table-card">
+        <div class="card-body">
+          <table mat-table [dataSource]="paginatedTypes" class="mat-elevation-z8">
+            <!-- Nombre -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Nombre</th>
+              <td mat-cell *matCellDef="let type">{{ type.name }}</td>
+            </ng-container>
+            <!-- Acciones -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Acciones</th>
+              <td mat-cell *matCellDef="let type">
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="deleteType(type.id)"
+                  matTooltip="Eliminar"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns;"
+              (click)="selectType(row)"
+            ></tr>
+          </table>
+          <mat-paginator
+            [length]="totalTypes"
+            [pageSizeOptions]="[5, 10]"
+            [pageSize]="5"
+            aria-label="Paginación de tipos"
+            (page)="onPageChange($event)"
+          >
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="col-md-5">
+      <div class="card form-card">
+        <div class="card-body">
+          <form [formGroup]="typeForm">
+            <!-- Nombre -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="name" />
+            </mat-form-field>
+
+            <!-- Chips para fases -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Fases</mat-label>
+              <mat-chip-grid #chipGrid aria-label="Fases seleccionadas">
+                <mat-chip-row
+                  *ngFor="let phase of selectedPhases"
+                  (removed)="removePhase(phase)"
+                >
+                  {{ phase.name }}
+                  <button
+                    matChipRemove
+                    [attr.aria-label]="'Eliminar fase ' + phase.name"
+                  >
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+              </mat-chip-grid>
+              <input
+                placeholder="Seleccionar fases"
+                [matChipInputFor]="chipGrid"
+                [matAutocomplete]="auto"
+                [formControl]="phaseFilterCtrl"
+              />
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addPhase($event)">
+                <mat-option *ngFor="let phase of filteredPhases" [value]="phase">
+                  {{ phase.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+        </div>
+
+        <div class="button-group">
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="!typeForm.valid"
+            (click)="saveType()"
+          >
+            {{ selectedType ? 'Actualizar' : 'Guardar' }}
+          </button>
+          <button mat-raised-button color="accent" (click)="addNewType()">
+            Nuevo
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -17,6 +17,12 @@ import { ClientService } from './services/client.service';
 import { PhaseService } from './services/phase.service';
 import { PhaseController } from './controllers/phase.controller';
 import { phaseRoutes } from './routes/phase.routes';
+import { TypeService } from './services/type.service';
+import { TypeController } from './controllers/types.controller';
+import { typeRoutes } from './routes/types.routes';
+import { ProjectService } from './services/project.service';
+import { ProjectController } from './controllers/project.controller';
+import { projectRoutes } from './routes/project.routes';
 
 dotenv.config();
 
@@ -58,16 +64,23 @@ const userService = new UserService(db);
 const departmentService = new DepartmentService(db);
 const clientService = new ClientService(db);
 const phaseService = new PhaseService(db);
+const typeService = new TypeService(db);
+const projectService = new ProjectService(db);
 
 const userController = new UserController(userService);
 const phaseController = new PhaseController(phaseService);
 const departmentController = new DepartmentController(departmentService);
 const clientController = new ClientController(clientService);
+const typeController = new TypeController(typeService);
+const projectController = new ProjectController(projectService);
+
 // Routes
 app.use('/api/users', userRoutes(userController));
 app.use('/api/departments', departmentRoutes(departmentController, departmentService)); 
 app.use('/api/clients', clientRoutes(clientController)); 
 app.use('/api/phases', phaseRoutes(phaseController)); 
+app.use('/api/types', typeRoutes(typeController)); 
+app.use('/api/proyects', projectRoutes(projectController)); 
 // Error handling middleware
 app.use(errorHandler);
 
