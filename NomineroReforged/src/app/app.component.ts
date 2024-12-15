@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 import { RouterOutlet } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -11,3 +13,5 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   title = 'nominero-reforged';
 }
+
+

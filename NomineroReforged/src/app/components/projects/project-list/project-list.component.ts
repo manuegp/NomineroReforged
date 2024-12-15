@@ -5,14 +5,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { ProjectService } from '../../../services/projects.service';
 import { Project } from '../../../models/proyect.model';
 import { DepartmentService } from '../../../services/deparments.service';
@@ -25,6 +25,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { TypesService } from '../../../services/type.service';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ProjectEmployeesComponent } from "../project-employees/project-employees.component";
 @Component({
   selector: 'app-project-list',
   standalone: true,
@@ -40,10 +42,12 @@ import { TypesService } from '../../../services/type.service';
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSelectModule
-  ],
+    MatSelectModule,
+    MatTabsModule,
+    ProjectEmployeesComponent
+],
   providers: [  
-    provideNativeDateAdapter(),  
+    provideNativeDateAdapter()
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-list.component.html',
@@ -67,7 +71,7 @@ export class ProjectListComponent implements OnInit {
   types: Type[]=[];
   clients: Client[]=[];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
 
   constructor(
     private fb: FormBuilder,
@@ -79,17 +83,18 @@ export class ProjectListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.paginator._intl.itemsPerPageLabel = 'Registros por pagina'
     this.initForm();
     this.loadClients();
     this.loadDepartments();
     this.loadProjects();
     this.loadTypes();
-
+    
   }
 
   initForm(): void {
     this.projectForm = this.fb.group({
-      code: ['', [Validators.required, Validators.maxLength(20)]],
+      code: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       name: ['', [Validators.required, Validators.maxLength(50)]],
       client: ['', Validators.required],
       estimated: ['', [Validators.required, Validators.maxLength(255)]],
@@ -105,7 +110,22 @@ export class ProjectListComponent implements OnInit {
     const department = this.departments.find((d) => d.id === departmentId);
     return department ? department.name : '';
   }
-  
+
+  getClientName(clientId: number): string {
+    const client = this.clients.find((d) => d.id === clientId);
+    return client ? client.name : '';
+  }
+
+  /**
+   * Formatea una fecha al formato dd-MM-yyyy.
+   * @param date Fecha en string o Date.
+   * @returns Fecha formateada como string.
+   */
+  getFormattedDate(date: string | Date): string {
+    if (!date) return ''; // Si la fecha está vacía, retorna cadena vacía
+    const parsedDate = typeof date === 'string' ? new Date(date) : date; // Asegúrate de convertir el string a Date si es necesario
+    return formatDate(parsedDate, 'dd-MM-yyyy', 'en-US'); // Formato usando Angular's formatDate
+  }
 
   loadTypes(): void {
     this.typesService.getAllTypes().subscribe({
@@ -228,3 +248,7 @@ export class ProjectListComponent implements OnInit {
     this.projectForm.reset();
   }
 }
+function getSpanishPaginatorIntl(): any {
+  throw new Error('Function not implemented.');
+}
+

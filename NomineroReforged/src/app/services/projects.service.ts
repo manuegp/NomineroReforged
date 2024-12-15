@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../enviroments/enviroment';
+import { User } from '../models/user.model';
 
 export interface Project {
   id: number;
@@ -39,4 +40,16 @@ export class ProjectService {
   deleteProject(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+  getEmployeesByProject(projectId: number): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/${projectId}/employees`);
+  }
+
+  assignEmployeesToProject(projectId: number, users: User[]): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${projectId}/assign-employees`, { users });
+  }
+
+  deleteEmployeeFromProject(projectId: number, userId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${projectId}/employees/${userId}`);
+  }
+  
 }

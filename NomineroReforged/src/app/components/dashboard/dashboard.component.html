@@ -1,29 +1,29 @@
 <div class="dashboard-container">
-    <mat-sidenav-container class="sidenav-container">
-      <mat-sidenav mode="side" opened class="sidenav">
-        <div class="logo-container">
-          <img src="assets/logo.png" alt="Logo" class="logo">
-        </div>
-        
-        <mat-nav-list>
-          <a mat-list-item *ngFor="let item of menuItems" 
-             [routerLink]="item.route"
-             routerLinkActive="active-link">
-            <mat-icon>{{item.icon}}</mat-icon>
-            <span>{{item.label}}</span>
-          </a>
-        </mat-nav-list>
-  
-        <div class="logout-container">
-          <button mat-raised-button color="warn" (click)="logout()">
-            <mat-icon>exit_to_app</mat-icon>
-            Cerrar sesión
-          </button>
-        </div>
-      </mat-sidenav>
-  
-      <mat-sidenav-content class="sidenav-content">
-        <router-outlet></router-outlet>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
-  </div>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav mode="side" opened class="sidenav" [disableClose]="true">
+      <div class="logo-container">
+        <img src="assets/logo.png" alt="Logo" class="logo">
+      </div>
+
+      <mat-nav-list>
+        <a mat-list-item *ngFor="let item of menuItems" 
+           [routerLink]="item.route"
+           routerLinkActive="active-link">
+          <mat-icon>{{item.icon}}</mat-icon>
+          <span>{{item.label}}</span>
+        </a>
+      </mat-nav-list>
+
+      <div class="logout-container">
+        <button mat-raised-button color="warn" (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          Cerrar sesión
+        </button>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="sidenav-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

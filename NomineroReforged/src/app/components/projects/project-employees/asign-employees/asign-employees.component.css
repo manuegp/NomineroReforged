@@ -1,0 +1,45 @@
+/* Ajustar márgenes del contenedor principal */
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem; /* Espacio interno */
+  margin: 0; /* Elimina márgenes extra */
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+/* Filtro de búsqueda */
+.mat-form-field {
+  margin-bottom: 1rem; /* Espacio entre el filtro y la tabla */
+}
+
+/* Tabla */
+.table-container {
+  margin: 0; /* Elimina márgenes extra */
+  padding: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px 8px; /* Espaciado de las celdas */
+  text-align: left;
+}
+
+/* Botones */
+.dialog-footer {
+  margin-top: 1rem; /* Espacio superior entre la tabla y los botones */
+  padding: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem; /* Espacio entre botones */
+}
+
+/* Ajuste del diálogo completo */
+.mat-dialog-container {
+  padding: 0; /* Elimina padding adicional */
+  border-radius: 8px; /* Bordes redondeados */
+}

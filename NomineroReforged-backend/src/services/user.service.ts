@@ -295,7 +295,7 @@ export class UserService {
          FROM NMN_USER u
          LEFT JOIN NMN_USER_DEPARTMENT ud ON u.id = ud.id_user
          LEFT JOIN NMN_DEPARTAMENT d ON ud.id_depart = d.id
-         WHERE TRIM(u.email) = ? AND u.delete_mark = 0`,
+         WHERE TRIM(u.email) = ? AND u.delete_mark = 0 AND u.is_active = 1` ,
         [email],
         async (err, row) => {
           if (err) {

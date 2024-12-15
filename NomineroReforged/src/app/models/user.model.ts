@@ -17,4 +17,5 @@ export interface User {
   role_id?: number;  // Add this line
   department_name?: string
   department_id?: number
+  selected?: boolean
 }
