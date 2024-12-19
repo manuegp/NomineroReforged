@@ -46,6 +46,41 @@ export class ProjectService {
     });
   }
   
+  async getAllProjectsByAdmin(departmentId: number): Promise<Project[]> {
+    return new Promise((resolve, reject) => {
+      this.db.all(
+        `
+        SELECT 
+          p.*,
+          GROUP_CONCAT(ph.id || ':' || ph.name) AS phases
+        FROM 
+          NMN_PROJECTS p
+        LEFT JOIN 
+          NMN_TYPE_PRO_PHASE tp ON p.type = tp.id_type_project
+        LEFT JOIN 
+          NMN_PHASE ph ON tp.id_phase = ph.id
+        WHERE 
+          p.delete_mark = 0 AND p.department = ?
+        GROUP BY 
+          p.id
+        `,[departmentId],
+        (err, rows) => {
+          if (err) {
+            reject(new AppError('Error fetching projects with phases', 500));
+          } else {
+            const projects = rows.map((row: any) => ({
+              ...row,
+              phases: row.phases ? row.phases.split(',').map((phase: string) => {
+                const [id, name] = phase.split(':');
+                return { id: Number(id), name };
+              }) : [],
+            }));
+            resolve(projects as Project[]);
+          }
+        }
+      );
+    });
+  }
 
   async getProjectById(id: number): Promise<Project | null> {
     return new Promise((resolve, reject) => {

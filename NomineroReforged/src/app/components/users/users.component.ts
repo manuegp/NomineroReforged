@@ -18,6 +18,7 @@ import { DepartmentService } from '../../services/deparments.service';
 import { Department } from '../../models/department.model';
 import { DepartmentsPopupComponent } from './departments-popup/departments-popup.component';
 import { SnackbarService } from '../../snackbar/snackbar';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -40,6 +41,7 @@ import { SnackbarService } from '../../snackbar/snackbar';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit, AfterViewInit {
+  rol: string = "";
   users: User[] = [];
   filteredUsers: User[] = [];
   displayedUsers: User[] = [];
@@ -66,12 +68,16 @@ export class UsersComponent implements OnInit, AfterViewInit {
     private userService: UserService,
     private deparmentService: DepartmentService,
     private dialog: MatDialog,
-    private snackbar: SnackbarService
+    private snackbar: SnackbarService,
+    private authService: AuthService,
   ) { }
 
   ngOnInit() {
+    this.rol = this.authService.getRoleFromToken()!;
     this.loadUsers();
+    if(this.rol == "Superadmin"){
     this.loadDepartments();
+  }
   }
 
   ngAfterViewInit() {

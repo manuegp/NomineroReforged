@@ -27,6 +27,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { TypesService } from '../../../services/type.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ProjectEmployeesComponent } from "../project-employees/project-employees.component";
+import { AuthService } from '../../../services/auth.service';
+import { ProjectsPopupComponent } from './projects-popup/projects-popup.component';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-project-list',
   standalone: true,
@@ -44,7 +47,6 @@ import { ProjectEmployeesComponent } from "../project-employees/project-employee
     MatNativeDateModule,
     MatSelectModule,
     MatTabsModule,
-    ProjectEmployeesComponent
 ],
   providers: [  
     provideNativeDateAdapter()
@@ -66,7 +68,7 @@ export class ProjectListComponent implements OnInit {
   dataSource = new MatTableDataSource<Project>();
   projectForm!: FormGroup;
   selectedProject: Project | null = null;
-
+  rol:string = ""; 
   departments: Department[]=[];
   types: Type[]=[];
   clients: Client[]=[];
@@ -79,32 +81,24 @@ export class ProjectListComponent implements OnInit {
     private deparmentService: DepartmentService,
     private clientService: ClientsService,
     private typesService: TypesService,
-    private snackbar: SnackbarService
+    private authService: AuthService,
+    private snackbar: SnackbarService,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
+    this.rol = this.authService.getRoleFromToken()!;
     this.paginator._intl.itemsPerPageLabel = 'Registros por pagina'
-    this.initForm();
     this.loadClients();
+    if(this.rol == "Superadmin"){
     this.loadDepartments();
+    }
     this.loadProjects();
     this.loadTypes();
     
   }
 
-  initForm(): void {
-    this.projectForm = this.fb.group({
-      code: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-      name: ['', [Validators.required, Validators.maxLength(50)]],
-      client: ['', Validators.required],
-      estimated: ['', [Validators.required, Validators.maxLength(255)]],
-      date_start: [''],
-      date_end: [''],
-      description: ['', Validators.maxLength(255)],
-      type: ['', Validators.required],
-      department: ['', Validators.required],
-    });
-  }
+  
 
   getDepartmentName(departmentId: number): string {
     const department = this.departments.find((d) => d.id === departmentId);
@@ -213,28 +207,6 @@ export class ProjectListComponent implements OnInit {
     });
   }
   
-  
-  saveProject(): void {
-    if (this.projectForm.valid) {
-      const project = this.projectForm.value as Project;
-      if (this.selectedProject) {
-        // Update
-        this.projectService
-          .updateProject(this.selectedProject.id, project)
-          .subscribe(() => {
-            this.loadProjects();
-            this.newForm();
-          });
-      } else {
-        // Create
-        this.projectService.createProject(project).subscribe(() => {
-          this.loadProjects();
-          this.newForm();
-        });
-      }
-    }
-  }
-
   deleteProject(projectId: number): void {
     if (confirm('Are you sure you want to delete this project?')) {
       this.projectService
@@ -243,12 +215,30 @@ export class ProjectListComponent implements OnInit {
     }
   }
 
-  newForm(): void {
-    this.selectedProject = null;
-    this.projectForm.reset();
-  }
+  
+    openProjectDialog(project: Project | null = null): void {
+      const dialogRef = this.dialog.open(ProjectsPopupComponent, {
+        width: 'auto',
+        height: 'auto',
+        data: {
+          project: project,
+          departments: this.departments,
+          clients: this.clients,
+          types: this.types,
+        },
+      });
+    
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          if (project) {
+            this.projectService.updateProject(project.id, result).subscribe(() => this.loadProjects());
+          } else {
+            this.projectService.createProject(result).subscribe(() => this.loadProjects());
+          }
+        }
+      });
+    }
+  
 }
-function getSpanishPaginatorIntl(): any {
-  throw new Error('Function not implemented.');
-}
+
 

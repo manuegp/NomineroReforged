@@ -12,6 +12,7 @@ import { DepartmentService } from '../../../services/deparments.service'; // Ase
 import { Department } from '../../../models/department.model'; // Modelo de departamentos
 import { UserService } from '../../../services/user.service';
 import { SnackbarService } from '../../../snackbar/snackbar';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-user-form',
@@ -35,6 +36,7 @@ export class UserFormComponent implements OnInit {
   userForm!: FormGroup;
   hidePassword = true;
   isEditMode = false;
+  rol:string = "";
   departments: Department[] = []; // Lista de departamentos
   roles = [
     { value: 1, viewValue: 'Empleado' },
@@ -46,15 +48,19 @@ export class UserFormComponent implements OnInit {
     private fb: FormBuilder,
     private departmentService: DepartmentService,
     private userService: UserService,
+    private authService: AuthService,
     public dialogRef: MatDialogRef<UserFormComponent>,
     private snackbar: SnackbarService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
    async ngOnInit(): Promise<void> {
+    this.rol = this.authService.getRoleFromToken()!;
     this.isEditMode = this.data.user == undefined ? false : true;
     await this.initForm();
-    await this.loadDepartments();
+    if(this.rol == "Superadmin"){
+      this.loadDepartments();
+    }
 
     if (!this.isEditMode) {
       // Retrasar el enfoque si es un nuevo usuario
@@ -71,7 +77,7 @@ export class UserFormComponent implements OnInit {
       email: [this.data?.user?.email || '', [Validators.required, Validators.email]],
       password: [this.isEditMode ? null : '', this.isEditMode ? [] : [Validators.required, Validators.minLength(6)]],
       role_id: [ this.convertRolId(), Validators.required],
-      department_id: [this.data?.user?.department_id || null, Validators.required],
+      department_id: [this.checkDepartment(), Validators.required],
       is_active: [this.convertIsActive(this.data?.user?.is_active)|| false],
     });
 
@@ -80,6 +86,16 @@ export class UserFormComponent implements OnInit {
       this.userForm.patchValue({
         department_id: this.data.user.department_id,
       });
+    }
+  }
+
+  checkDepartment(){
+    if(this.rol == 'Admin' && this.data.project){
+      return this.authService.getDepartmentIdFromToken()
+    }else if (this.data.project){
+      return this.data.project.department
+    }else{
+      return ''
     }
   }
 

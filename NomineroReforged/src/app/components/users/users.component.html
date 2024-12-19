@@ -30,6 +30,7 @@
       </mat-form-field>
 
       <!-- Filtro de departamento -->
+       @if(rol == "Superadmin"){
       <mat-form-field appearance="outline" class="filter-field">
         <mat-label>Departamento</mat-label>
         <mat-select [(ngModel)]="selectedDepartment" (ngModelChange)="applyFilters()">
@@ -39,6 +40,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+    }
 
       <!-- Botón para limpiar filtros -->
       <button mat-stroked-button color="primary" (click)="clearFilters()" class="clear-button filter-action-button">
@@ -48,10 +50,10 @@
     </div>
 
     <!-- Botón para añadir usuario -->
-    <button mat-raised-button color="primary" (click)="openDepartmentPopUp()" class="add-button">
+    @if(this.rol == "Superadmin"){<button mat-raised-button color="primary" (click)="openDepartmentPopUp()" class="add-button">
       <mat-icon>list</mat-icon>
       Gestionar departamentos
-    </button>
+    </button>}
     <button mat-raised-button color="primary" (click)="openUserForm()" class="add-button">
       <mat-icon>add</mat-icon>
       Añadir Usuario

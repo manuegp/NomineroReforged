@@ -1,42 +1,67 @@
-<h2 mat-dialog-title>{{ isEditMode ? 'Editar Usuario' : 'Crear Usuario' }}</h2>
+<h2 mat-dialog-title>{{ isEditMode ? "Editar Usuario" : "Crear Usuario" }}</h2>
 <mat-dialog-content>
-  <form [formGroup]="userForm" >
+  <form [formGroup]="userForm">
     <!-- Nombre -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nombre</mat-label>
-      <input matInput formControlName="name">
-      <mat-error *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched">
-        {{ getErrorMessage('name') }}
+      <input matInput formControlName="name" />
+      <mat-error
+        *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched"
+      >
+        {{ getErrorMessage("name") }}
       </mat-error>
     </mat-form-field>
 
     <!-- Apellido -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Apellido</mat-label>
-      <input matInput formControlName="surname">
-      <mat-error *ngIf="userForm.get('surname')?.invalid && userForm.get('surname')?.touched">
-        {{ getErrorMessage('surname') }}
+      <input matInput formControlName="surname" />
+      <mat-error
+        *ngIf="
+          userForm.get('surname')?.invalid && userForm.get('surname')?.touched
+        "
+      >
+        {{ getErrorMessage("surname") }}
       </mat-error>
     </mat-form-field>
 
     <!-- Email -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Email</mat-label>
-      <input matInput type="email" formControlName="email">
-      <mat-error *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
-        {{ getErrorMessage('email') }}
+      <input matInput type="email" formControlName="email" />
+      <mat-error
+        *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched"
+      >
+        {{ getErrorMessage("email") }}
       </mat-error>
     </mat-form-field>
 
     <!-- Contraseña (solo en modo creación) -->
     <mat-form-field appearance="fill" class="full-width" *ngIf="!isEditMode">
       <mat-label>Contraseña</mat-label>
-      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
-      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword" type="button">
-        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      <input
+        matInput
+        [type]="hidePassword ? 'password' : 'text'"
+        formControlName="password"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword = !hidePassword"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hidePassword"
+        type="button"
+      >
+        <mat-icon>{{
+          hidePassword ? "visibility_off" : "visibility"
+        }}</mat-icon>
       </button>
-      <mat-error *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
-        {{ getErrorMessage('password') }}
+      <mat-error
+        *ngIf="
+          userForm.get('password')?.invalid && userForm.get('password')?.touched
+        "
+      >
+        {{ getErrorMessage("password") }}
       </mat-error>
     </mat-form-field>
 
@@ -48,24 +73,37 @@
           {{ role.viewValue }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="userForm.get('role_id')?.invalid && userForm.get('role_id')?.touched">
+      <mat-error
+        *ngIf="
+          userForm.get('role_id')?.invalid && userForm.get('role_id')?.touched
+        "
+      >
         Seleccione un rol válido
       </mat-error>
     </mat-form-field>
 
     <!-- Departamento -->
+    @if(rol == "Superadmin"){
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Departamento</mat-label>
       <mat-select formControlName="department_id">
-        <mat-option *ngFor="let department of departments" [value]="department.id">
+        <mat-option
+          *ngFor="let department of departments"
+          [value]="department.id"
+        >
           {{ department.name }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="userForm.get('department_id')?.invalid && userForm.get('department_id')?.touched">
+      <mat-error
+        *ngIf="
+          userForm.get('department_id')?.invalid &&
+          userForm.get('department_id')?.touched
+        "
+      >
         Seleccione un departamento
       </mat-error>
     </mat-form-field>
-
+    }
     <!-- Usuario Activo -->
     <mat-slide-toggle formControlName="is_active" class="full-width">
       Usuario Activo
@@ -75,5 +113,12 @@
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-raised-button (click)="onSubmit()" color="primary" [disabled]="userForm.invalid">Guardar</button>
+  <button
+    mat-raised-button
+    (click)="onSubmit()"
+    color="primary"
+    [disabled]="userForm.invalid"
+  >
+    Guardar
+  </button>
 </mat-dialog-actions>

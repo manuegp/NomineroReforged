@@ -53,6 +53,15 @@ export class AuthService {
     return null;
   }
 
+  getDepartmentIdFromToken(): string | undefined {
+    const token = this.getToken();
+    if (token) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      return decodedToken.department_id
+    }
+    return undefined;
+  }
+
   getToken(): string | null {
     return localStorage.getItem('access_token');
   }
