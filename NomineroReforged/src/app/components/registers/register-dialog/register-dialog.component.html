@@ -1,0 +1,149 @@
+<div class="card">
+  <!-- Encabezado de la tarjeta -->
+  <div class="card-header">
+    <h2 class="card-title">
+      {{ data.register ? "Editar Registro" : "Crear Registro" }}
+    </h2>
+  </div>
+
+  <!-- Cuerpo de la tarjeta -->
+  <div class="card-body">
+    <div class="container">
+      <form [formGroup]="registerForm">
+        <div class="row">
+          <!-- Menú desplegable de Proyecto -->
+          <div class="col-md-6 mb-3">
+            <label for="project" class="form-label">Proyecto</label>
+            <select class="form-select" id="project" formControlName="project">
+              <option
+                *ngFor="let project of data.projects"
+                [value]="project.id"
+              >
+                {{ project.name }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                registerForm.get('project')?.invalid &&
+                registerForm.get('project')?.touched
+              "
+              class="text-danger"
+            >
+              Seleccione un proyecto.
+            </div>
+          </div>
+
+          <!-- Menú desplegable de Fase -->
+          <div class="col-md-6 mb-3">
+            <label for="phase" class="form-label">Fase</label>
+            <select class="form-select" id="phase" formControlName="phase">
+              <option *ngFor="let phase of filteredPhases" [value]="phase.id">
+                {{ phase.name }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                registerForm.get('phase')?.invalid &&
+                registerForm.get('phase')?.touched
+              "
+              class="text-danger"
+            >
+              Seleccione una fase.
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Checkbox de Horas Extras -->
+          <div class="col-md-6 mb-3">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="is_extra"
+                formControlName="is_extra"
+              />
+              <label class="form-check-label" for="is_extra"
+                >Horas Extras</label
+              >
+            </div>
+          </div>
+
+          <!-- Fecha de Inicio -->
+          <div class="col-md-6 mb-3">
+            <label for="start" class="form-label">Fecha de Inicio</label>
+            <input
+              type="datetime-local"
+              class="form-control"
+              id="start"
+              formControlName="start"
+            />
+            <div
+              *ngIf="
+                registerForm.get('start')?.invalid &&
+                registerForm.get('start')?.touched
+              "
+              class="text-danger"
+            >
+              Ingrese una fecha de inicio válida.
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Campo de Horas -->
+          <div class="col-md-6 mb-3">
+            <label for="time" class="form-label">Horas</label>
+            <input
+              type="number"
+              class="form-control"
+              id="time"
+              formControlName="time"
+              min="0"
+              max="24"
+            />
+            <div
+              *ngIf="
+                registerForm.get('time')?.invalid &&
+                registerForm.get('time')?.touched
+              "
+              class="text-danger"
+            >
+              Ingrese un número de horas válido (0-24).
+            </div>
+          </div>
+
+          <!-- Campo de Comentario -->
+          <div class="col-md-6 mb-3">
+            <label for="coment" class="form-label">Comentario</label>
+            <textarea
+              class="form-control"
+              id="coment"
+              rows="3"
+              formControlName="coment"
+            ></textarea>
+            <div
+              *ngIf="
+                registerForm.get('coment')?.invalid &&
+                registerForm.get('coment')?.touched
+              "
+              class="text-danger"
+            >
+              Ingrese un comentario.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Card Footer -->
+  <div class="card-footer text-end">
+    <button type="button" class="btn btn-secondary me-2" (click)="cancel()">
+      Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="save()">
+      Guardar
+    </button>
+  </div>
+</div>

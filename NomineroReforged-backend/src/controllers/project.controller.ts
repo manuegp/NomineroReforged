@@ -46,6 +46,20 @@ export class ProjectController {
     }
   }
 
+  async getProjectByEmployee(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) throw new AppError("Invalid user ID", 400);
+
+      const projects = await this.projectService.getProjectByEmployee(id);
+      if (!projects) throw new AppError("Projects not found", 404);
+
+      res.status(200).json(projects);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async getEmployeesFromProjectById(
     req: Request,
     res: Response,

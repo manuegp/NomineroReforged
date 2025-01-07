@@ -82,18 +82,50 @@ export class ProjectService {
     });
   }
 
-  async getProjectById(id: number): Promise<Project | null> {
+  async getProjectById(id: number): Promise<Project[] | null> {
     return new Promise((resolve, reject) => {
       this.db.get(
         'SELECT * FROM NMN_PROJECTS WHERE id = ? AND delete_mark = 0',
         [id],
         (err, row) => {
           if (err) reject(new AppError('Error fetching project', 500));
-          else resolve(row as Project | null);
+          else resolve(row as Project[] | null);
         }
       );
     });
   }
+
+  async getProjectByEmployee(id: number): Promise<{ id: number; name: string }[] | null> {
+    return new Promise((resolve, reject) => {
+      this.db.all(
+        `
+        SELECT 
+          p.id, 
+          p.name
+        FROM 
+          NMN_USER_PROJECTS up
+        JOIN 
+          NMN_PROJECTS p ON up.id_project = p.id
+        WHERE 
+          up.id_user = ? AND P.is_active = 1
+        `,
+        [id],
+        (err, rows) => {
+          if (err) {
+            reject(new AppError('Error fetching projects', 500));
+          } else {
+            resolve(
+              rows.map((row: any) => ({
+                id: row.id,
+                name: row.name,
+              }))
+            );
+          }
+        }
+      );
+    });
+  }
+  
 
   async getEmployeesFromProjectById(id: number): Promise<{ id: number; name: string }[]> {
     return new Promise((resolve, reject) => {
@@ -173,8 +205,8 @@ export class ProjectService {
     return new Promise((resolve, reject) => {
       this.db.run(
         `INSERT INTO NMN_PROJECTS 
-        (code, name, client, estimated, date_start, date_end, description, type, department, created_by, created_at) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
+        (code, name, client, estimated, date_start, date_end, description, type, department, created_by, created_at, is_active) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, 1)`,
         [
           project.code,
           project.name,
@@ -196,7 +228,7 @@ export class ProjectService {
   }
 
   async updateProject(id: number, project: Partial<Project>): Promise<void> {
-    const { code, name, client, estimated, date_start, date_end, description, type, department, updated_by } = project;
+    const { code, name, client, estimated, date_start, date_end, description, type, department, updated_by, is_active } = project;
     const updateFields: string[] = [];
     const values: any[] = [];
 
@@ -240,6 +272,10 @@ export class ProjectService {
       updateFields.push('updated_by = ?');
       values.push(updated_by);
     }
+    
+    updateFields.push('is_active = ?');
+    values.push(is_active);
+    
 
     updateFields.push('updated_at = CURRENT_TIMESTAMP');
     values.push(id);

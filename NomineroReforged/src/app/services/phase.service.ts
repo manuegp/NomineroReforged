@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../enviroments/enviroment';
 import { Phase } from '../models/phase.model';
+import { PhaseProject } from '../models/phasesProject.model';
 
 
 @Injectable({
@@ -27,5 +28,9 @@ export class PhasesService {
 
   deletePhase(id_phase: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id_phase}`);
+  }
+
+  getPhasesByProjectsId(projectsId: number[]): Observable<PhaseProject[]>{
+    return this.http.post<PhaseProject[]>(`${this.apiUrl}/ProjectPhases`, { projectIds: projectsId });
   }
 }

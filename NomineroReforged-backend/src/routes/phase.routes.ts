@@ -12,6 +12,7 @@ export function phaseRoutes(phaseController: PhaseController): Router {
   router.post('/', validatePhaseData, (req, res, next) => phaseController.createPhase(req, res, next));
   router.put('/:id', validatePhaseData, (req, res, next) => phaseController.updatePhase(req, res, next));
   router.delete('/:id', (req, res, next) => phaseController.deletePhase(req, res, next));
+  router.post('/ProjectPhases', (req, res, next) => phaseController.getPhasesByProjects(req, res, next));
 
   return router;
 }

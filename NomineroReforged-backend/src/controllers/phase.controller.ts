@@ -40,6 +40,22 @@ export class PhaseController {
     }
   }
 
+  async getPhasesByProjects(req: Request, res: Response, next: NextFunction) {
+    try {
+      const projectIds: number[] = req.body.projectIds; // Espera recibir un array de IDs de proyectos
+  
+      if (!Array.isArray(projectIds) || projectIds.length === 0) {
+        throw new AppError('Project IDs are required and must be an array.', 400);
+      }
+  
+      const phases = await this.phaseService.getPhasesByProjectIds(projectIds);
+      res.status(200).json(phases);
+    } catch (error) {
+      next(error);
+    }
+  }
+  
+
   // Crear una nueva fase
   async createPhase(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {

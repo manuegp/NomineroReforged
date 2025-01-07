@@ -28,6 +28,10 @@ export class ProjectService {
   getProjects(): Observable<Project[]> {
     return this.http.get<Project[]>(this.apiUrl);
   }
+  getProjectsFromEmployee(userId:number): Observable<Project[]> {
+    return this.http.get<Project[]>(`${this.apiUrl}/employee/${userId}`);
+  }
+
 
   createProject(project: Project): Observable<Project> {
     return this.http.post<Project>(this.apiUrl, project);

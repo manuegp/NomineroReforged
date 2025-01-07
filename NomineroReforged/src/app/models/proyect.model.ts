@@ -3,6 +3,7 @@ export interface Project {
     code: string;
     name: string;
     client: number;
+    is_active?: number| boolean;
     estimated: number;
     date_start: string;
     date_end: string | null;

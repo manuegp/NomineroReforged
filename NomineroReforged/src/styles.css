@@ -29,3 +29,7 @@ body {
     --mdc-snackbar-container-color: rgb(76, 136, 216);      
   }
 }
+
+.calendar_default_event_inner{
+  padding: 30px 2px 2px 8px;
+}

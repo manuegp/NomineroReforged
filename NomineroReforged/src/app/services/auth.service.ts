@@ -62,6 +62,15 @@ export class AuthService {
     return undefined;
   }
 
+  getUserId(): number | null{
+    const token = this.getToken();
+    if(token){
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      return decodedToken.id;
+    }
+    return null
+  }
+
   getToken(): string | null {
     return localStorage.getItem('access_token');
   }

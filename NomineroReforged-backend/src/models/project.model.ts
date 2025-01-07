@@ -7,6 +7,7 @@ export interface Project {
     date_start: string; // Fecha de inicio
     date_end?: string; // Fecha de finalización
     description?: string; // Descripción del proyecto
+    is_active?: number;
     type: number; // Tipo de proyecto
     department: number; // Departamento asociado
     updated_by?: number | null; // Usuario que actualizó el proyecto

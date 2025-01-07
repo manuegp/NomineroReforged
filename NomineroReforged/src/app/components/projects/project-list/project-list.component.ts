@@ -1,11 +1,20 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorIntl,
+  MatPaginatorModule,
+} from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,15 +30,19 @@ import { Department } from '../../../models/department.model';
 import { Type } from '../../../models/types.model';
 import { Client } from '../../../models/client.model';
 import { SnackbarService } from '../../../snackbar/snackbar';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import {
+  MatNativeDateModule,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { TypesService } from '../../../services/type.service';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ProjectEmployeesComponent } from "../project-employees/project-employees.component";
 import { AuthService } from '../../../services/auth.service';
 import { ProjectsPopupComponent } from './projects-popup/projects-popup.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 @Component({
   selector: 'app-project-list',
   standalone: true,
@@ -47,9 +60,8 @@ import { MatDialog } from '@angular/material/dialog';
     MatNativeDateModule,
     MatSelectModule,
     MatTabsModule,
-],
-  providers: [  
-    provideNativeDateAdapter()
+    MatTooltipModule,
+    MatSlideToggleModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-list.component.html',
@@ -64,41 +76,38 @@ export class ProjectListComponent implements OnInit {
     'date_start',
     'date_end',
     'actions',
+    'is_active',
   ];
   dataSource = new MatTableDataSource<Project>();
   projectForm!: FormGroup;
   selectedProject: Project | null = null;
-  rol:string = ""; 
-  departments: Department[]=[];
-  types: Type[]=[];
-  clients: Client[]=[];
+  rol: string = '';
+  departments: Department[] = [];
+  types: Type[] = [];
+  clients: Client[] = [];
 
-  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
   constructor(
-    private fb: FormBuilder,
     private projectService: ProjectService,
     private deparmentService: DepartmentService,
     private clientService: ClientsService,
     private typesService: TypesService,
     private authService: AuthService,
     private snackbar: SnackbarService,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.rol = this.authService.getRoleFromToken()!;
-    this.paginator._intl.itemsPerPageLabel = 'Registros por pagina'
+    this.paginator._intl.itemsPerPageLabel = 'Registros por pagina';
     this.loadClients();
-    if(this.rol == "Superadmin"){
-    this.loadDepartments();
+    if (this.rol == 'Superadmin') {
+      this.loadDepartments();
     }
     this.loadProjects();
     this.loadTypes();
-    
   }
-
-  
 
   getDepartmentName(departmentId: number): string {
     const department = this.departments.find((d) => d.id === departmentId);
@@ -175,8 +184,6 @@ export class ProjectListComponent implements OnInit {
     });
   }
 
- 
-
   loadProjects(): void {
     this.projectService.getProjects().subscribe((projects) => {
       this.dataSource.data = projects;
@@ -184,61 +191,78 @@ export class ProjectListComponent implements OnInit {
     });
   }
 
-  selectProject(project: Project): void {
-    console.log('Seleccionando proyecto:', project);
-    console.log('Departamentos disponibles:', this.departments);
-  
-    this.selectedProject = project;
-  
-    if (this.departments.length === 0) {
-      this.loadDepartments();
-    }
-  
-    this.projectForm.patchValue({
-      code: project.code,
-      name: project.name,
-      client: project.client,
-      estimated: project.estimated,
-      date_start: project.date_start,
-      date_end: project.date_end,
-      description: project.description,
-      type: project.type,
-      department: project.department, // Asegúrate de que este valor sea válido
-    });
-  }
-  
+  // selectProject(project: Project): void {
+  //   console.log('Seleccionando proyecto:', project);
+  //   console.log('Departamentos disponibles:', this.departments);
+
+  //   this.selectedProject = project;
+
+  //   if (this.departments.length === 0) {
+  //     this.loadDepartments();
+  //   }
+
+  //   this.projectForm.patchValue({
+  //     code: project.code,
+  //     name: project.name,
+  //     client: project.client,
+  //     estimated: project.estimated,
+  //     date_start: project.date_start,
+  //     date_end: project.date_end,
+  //     description: project.description,
+  //     type: project.type,
+  //     department: project.department, // Asegúrate de que este valor sea válido
+  //   });
+  // }
+
   deleteProject(projectId: number): void {
-    if (confirm('Are you sure you want to delete this project?')) {
+    if (confirm('¿Seguro que quieres borrar este proyecto?')) {
       this.projectService
         .deleteProject(projectId)
         .subscribe(() => this.loadProjects());
     }
   }
 
+  changeStatus(project: Project, event: MatSlideToggleChange) {
+    const originalState = event.checked; // Captura el estado actual del slider
+    const msg = `¿Seguro que quieres ${project.is_active ? 'desactivar' : 'activar'} este proyecto?`;
   
-    openProjectDialog(project: Project | null = null): void {
-      const dialogRef = this.dialog.open(ProjectsPopupComponent, {
-        width: 'auto',
-        height: 'auto',
-        data: {
-          project: project,
-          departments: this.departments,
-          clients: this.clients,
-          types: this.types,
-        },
+    if (confirm(msg)) {
+      // Cambiar el estado del proyecto solo si se confirma
+      project.is_active = originalState ? 1 : 0; // Ajusta el estado
+      this.projectService.updateProject(project.id, project).subscribe(() => {
+        this.loadProjects();
       });
-    
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          if (project) {
-            this.projectService.updateProject(project.id, result).subscribe(() => this.loadProjects());
-          } else {
-            this.projectService.createProject(result).subscribe(() => this.loadProjects());
-          }
-        }
-      });
+    } else {
+      // Si no se confirma, revertir el estado del slider
+      event.source.checked = !originalState;
     }
+  }
   
+
+  openProjectDialog(project: Project | null = null): void {
+    const dialogRef = this.dialog.open(ProjectsPopupComponent, {
+      width: 'auto',
+      height: 'auto',
+      data: {
+        project: project,
+        departments: this.departments,
+        clients: this.clients,
+        types: this.types,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (project) {
+          this.projectService
+            .updateProject(project.id, result)
+            .subscribe(() => this.loadProjects());
+        } else {
+          this.projectService
+            .createProject(result)
+            .subscribe(() => this.loadProjects());
+        }
+      }
+    });
+  }
 }
-
-

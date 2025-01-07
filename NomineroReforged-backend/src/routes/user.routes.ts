@@ -7,7 +7,7 @@ export function userRoutes(userController: UserController): Router {
   const router = Router();
 
   router.post('/login', (req, res, next) => userController.login(req, res, next));
-
+  router.post('/recoverPwd', (req, res, next) => userController.recoverPassword(req, res, next))
   // Rutas protegidas
   router.get('/', authMiddleware, (req, res, next) => userController.getAllUsers(req, res, next));
   router.get('/:id', authMiddleware, (req, res, next) => userController.getUserById(req, res, next));
