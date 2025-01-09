@@ -64,8 +64,10 @@ export class RegisterDialogComponent implements OnInit {
       const formData = { ...this.registerForm.value };
   
       // Asegúrate de formatear el campo 'start' antes de enviarlo
-      formData.start = new Date(formData.start).toISOString().slice(0, 19);
-  
+      const date = new Date(formData.start)
+      date.setHours(date.getHours() + 1);
+      formData.start = date.toISOString().slice(0, 19);
+      
       this.dialogRef.close(formData);
     } else {
       this.registerForm.markAllAsTouched();

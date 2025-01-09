@@ -39,9 +39,13 @@ export class RegistersService {
     return this.http.post<Register>(`${this.apiUrl}`, register);
   }
 
-   updateRegister(idRegister: number, register: Register): Observable<Register> {
-      return this.http.put<Register>(`${this.apiUrl}/${idRegister}`,  register );
-    }
+  updateRegister(idRegister: number, register: Register): Observable<Register> {
+    return this.http.put<Register>(`${this.apiUrl}/${idRegister}`, register);
+  }
+
+  deleteRegister(idRegister: number): Observable<Register> {
+    return this.http.delete<Register>(`${this.apiUrl}/${idRegister}`);
+  }
 
   /**
    * Convierte los registros a eventos de DayPilot
@@ -71,14 +75,13 @@ export class RegistersService {
         backColor: RegistersService.colors.blue,
         fontColor: 'white',
         borderColor: 'white',
-        
       };
     });
   }
 
   getName(array: (Phase | Project)[], id: number): string {
     const item = array.find((x: Phase | Project) => x.id === id);
-    return item?.name ?? ''; 
+    return item?.name ?? '';
   }
 
   getColors(): any[] {

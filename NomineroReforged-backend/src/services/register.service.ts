@@ -154,4 +154,20 @@ export class RegisterService {
       )
     })
   }
+
+  async deleteRegister(id: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.db.run(
+        `UPDATE NMN_REGISTERS SET delete_mark = 1 WHERE id = ?`,
+        [id],
+        (err) => {
+          if (err) {
+            reject(new AppError('Error deleting', 500));
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+  }
 }

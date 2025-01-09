@@ -49,6 +49,18 @@ export class RegisterController {
       next(error);
     }
   }
-
+  async deleteRegister(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = parseInt(req.params.id);
+      const registerId = await this.registerService.deleteRegister(id);
+  
+      res.status(200).json({
+        message: 'Register deleted successfully',
+        registerId,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
   
 }

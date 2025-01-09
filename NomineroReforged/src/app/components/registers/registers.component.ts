@@ -17,6 +17,7 @@ import { PhaseProject } from '../../models/phasesProject.model';
 import { Register } from '../../models/register.model';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'app-registers',
@@ -149,6 +150,10 @@ export class RegistersComponent implements AfterViewInit {
     },
   };
 
+  resizeEvent(){
+    console.log("Resize funciona")
+  }
+
   selectTomorrow() {
     this.date = DayPilot.Date.today().addDays(1);
   }
@@ -157,7 +162,7 @@ export class RegistersComponent implements AfterViewInit {
     timeFormat: 'Clock24Hours',
     durationBarVisible: false,
     contextMenu: this.contextMenu,
-    // eventResizeHandling: this.moveEvent.bind(this),
+    onEventResize: this.resizeEvent.bind(this),
     onEventMoved: this.moveEvent.bind(this),
     onTimeRangeSelected: this.onTimeRangeSelected.bind(this),
     onBeforeEventRender: this.onBeforeEventRender.bind(this),
@@ -169,6 +174,7 @@ export class RegistersComponent implements AfterViewInit {
     timeFormat: 'Clock24Hours',
     durationBarVisible: false,
     contextMenu: this.contextMenu,
+    onEventResize: this.resizeEvent.bind(this),
     onEventMoved: this.moveEvent.bind(this),
     onTimeRangeSelected: this.onTimeRangeSelected.bind(this),
     onBeforeEventRender: this.onBeforeEventRender.bind(this),
@@ -318,6 +324,7 @@ export class RegistersComponent implements AfterViewInit {
     let record: Register = {};
     record.start = args.start;
     record.end = args.end;
+    record.time = new DayPilot.Duration(args.start, args.end).totalHours();
     this.openRegisterDialog(true, record);
   }
 
@@ -367,8 +374,8 @@ export class RegistersComponent implements AfterViewInit {
   }
 
   onBeforeEventRender(args: any) {
-    const dp = args.control;
-
+    
+    
     args.data.areas = [
       // Área de texto
       {
@@ -405,8 +412,12 @@ export class RegistersComponent implements AfterViewInit {
         height: 20,
         html: '<i class="material-icons" style="color: white; font-size: 16px;">delete_forever</i>',
         toolTip: 'Eliminar',
+        action: 'None',
         onClick: async (args: any) => {
-          dp.events.remove(args.source); // Eliminar el evento
+          
+          this.registerService.deleteRegister(args.source.data.id).subscribe(()=>{
+            this.loadEvents();
+          })
         },
       },
     ];
