@@ -18,6 +18,7 @@ import { Register } from '../../models/register.model';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
 import { Action } from 'rxjs/internal/scheduler/Action';
+import { SnackbarService } from '../../snackbar/snackbar';
 
 @Component({
   selector: 'app-registers',
@@ -30,7 +31,6 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 export class RegistersComponent implements AfterViewInit {
   @ViewChild('day') day!: DayPilotCalendarComponent;
   @ViewChild('week') week!: DayPilotCalendarComponent;
-  @ViewChild('month') month!: DayPilotMonthComponent;
   @ViewChild('navigator') nav!: DayPilotNavigatorComponent;
 
   
@@ -51,7 +51,8 @@ export class RegistersComponent implements AfterViewInit {
     private projectService: ProjectService,
     private phaseService: PhasesService,
     private authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackbar: SnackbarService
   ) {
     this.viewWeek();
   }
@@ -85,10 +86,12 @@ export class RegistersComponent implements AfterViewInit {
         if (isNew) {
           
           this.registerService.addRegister(result).subscribe(()=>{
+            this.snackbar.openSnackbar("Registro creado", "snackbar-success", 3000)
             this.loadEvents();
           });
         } else {
           this.registerService.updateRegister(result.id, result).subscribe(()=>{
+            this.snackbar.openSnackbar("Registro actualizado", "snackbar-success", 3000)
             this.loadEvents();
         })
         }
@@ -142,6 +145,7 @@ export class RegistersComponent implements AfterViewInit {
   });
 
   configNavigator: DayPilot.NavigatorConfig = {
+    locale: "es-es",
     showMonths: 1,
     cellWidth: 45,
     cellHeight: 25,
@@ -150,8 +154,14 @@ export class RegistersComponent implements AfterViewInit {
     },
   };
 
-  resizeEvent(){
-    console.log("Resize funciona")
+  resizeEvent(args:any){
+    let data = args.e.data;
+    data.time = this.calculateTimeDiff(args.newStart, args.newEnd)
+    data.date = args.newStart;
+     this.registerService.updateRegister(data.id, data).subscribe(()=>{
+       this.snackbar.openSnackbar("Registro actualizado", "snackbar-success", 3000)
+       this.loadEvents();
+   })
   }
 
   selectTomorrow() {
@@ -162,6 +172,7 @@ export class RegistersComponent implements AfterViewInit {
     timeFormat: 'Clock24Hours',
     durationBarVisible: false,
     contextMenu: this.contextMenu,
+    locale: "es-es",
     onEventResize: this.resizeEvent.bind(this),
     onEventMoved: this.moveEvent.bind(this),
     onTimeRangeSelected: this.onTimeRangeSelected.bind(this),
@@ -174,6 +185,7 @@ export class RegistersComponent implements AfterViewInit {
     timeFormat: 'Clock24Hours',
     durationBarVisible: false,
     contextMenu: this.contextMenu,
+    locale: "es-es",
     onEventResize: this.resizeEvent.bind(this),
     onEventMoved: this.moveEvent.bind(this),
     onTimeRangeSelected: this.onTimeRangeSelected.bind(this),
@@ -181,17 +193,11 @@ export class RegistersComponent implements AfterViewInit {
     onEventClick: this.onEventClick.bind(this),
   };
 
-  // configMonth: DayPilot.MonthConfig = {
-  //   contextMenu: this.contextMenu,
-  //   eventBarVisible: false,
-  //   onTimeRangeSelected: this.onTimeRangeSelected.bind(this),
-  //   onEventClick: this.onEventClick.bind(this),
-  // };
-
   moveEvent(args:any){
     let register = args.e.data
     register.date = register.start;
      this.registerService.updateRegister(register.id, register).subscribe(()=>{
+      this.snackbar.openSnackbar("Registro actualizado", "snackbar-success", 3000)
        this.loadEvents();
    })
   }
@@ -416,6 +422,7 @@ export class RegistersComponent implements AfterViewInit {
         onClick: async (args: any) => {
           
           this.registerService.deleteRegister(args.source.data.id).subscribe(()=>{
+            this.snackbar.openSnackbar("Registro borrado", "snackbar-success", 3000)
             this.loadEvents();
           })
         },

@@ -30,7 +30,8 @@ import { registerRoutes } from './routes/registers.routes';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = parseInt(process.env.PORT || '3000', 10);
+const host = process.env.HOST || '0.0.0.0';
 
 // Initialize SQLite database
 const db = new Database(process.env.DB_PATH || ':memory:', (err) => {
@@ -92,7 +93,7 @@ app.use('/api/registers', registerRoutes(registerController));
 app.use(errorHandler);
 
 // Start the server
-const server = app.listen(port, () => {
+const server = app.listen(port, host, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 

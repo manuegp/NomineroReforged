@@ -42,7 +42,10 @@ import { AuthService } from '../../../services/auth.service';
 import { ProjectsPopupComponent } from './projects-popup/projects-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {
+  MatSlideToggleChange,
+  MatSlideToggleModule,
+} from '@angular/material/slide-toggle';
 @Component({
   selector: 'app-project-list',
   standalone: true,
@@ -224,8 +227,10 @@ export class ProjectListComponent implements OnInit {
 
   changeStatus(project: Project, event: MatSlideToggleChange) {
     const originalState = event.checked; // Captura el estado actual del slider
-    const msg = `¿Seguro que quieres ${project.is_active ? 'desactivar' : 'activar'} este proyecto?`;
-  
+    const msg = `¿Seguro que quieres ${
+      project.is_active ? 'desactivar' : 'activar'
+    } este proyecto?`;
+
     if (confirm(msg)) {
       // Cambiar el estado del proyecto solo si se confirma
       project.is_active = originalState ? 1 : 0; // Ajusta el estado
@@ -237,11 +242,10 @@ export class ProjectListComponent implements OnInit {
       event.source.checked = !originalState;
     }
   }
-  
 
   openProjectDialog(project: Project | null = null): void {
     const dialogRef = this.dialog.open(ProjectsPopupComponent, {
-      width: 'auto',
+      width: '70%',
       height: 'auto',
       data: {
         project: project,
@@ -256,11 +260,25 @@ export class ProjectListComponent implements OnInit {
         if (project) {
           this.projectService
             .updateProject(project.id, result)
-            .subscribe(() => this.loadProjects());
+            .subscribe(() => {
+              this.snackbar.openSnackbar(
+                'Proyecto actualizado',
+                'snackbar-success',
+                3000
+              );
+              this.loadProjects();
+            });
         } else {
           this.projectService
             .createProject(result)
-            .subscribe(() => this.loadProjects());
+            .subscribe(() =>{
+              this.snackbar.openSnackbar(
+                'Proyecto creado',
+                'snackbar-success',
+                3000
+              );
+               this.loadProjects()
+              });
         }
       }
     });

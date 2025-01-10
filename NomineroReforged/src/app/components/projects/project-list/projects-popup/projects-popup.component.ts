@@ -23,7 +23,7 @@ import { ProjectEmployeesComponent } from '../../project-employees/project-emplo
 import { Client } from '../../../../models/client.model';
 import { Department } from '../../../../models/department.model';
 import { Type } from '../../../../models/types.model';
-import { Project } from '../../../../services/projects.service';
+import { Project } from '../../../../models/proyect.model';
 
 @Component({
   selector: 'app-projects-popup',
@@ -113,6 +113,7 @@ export class ProjectsPopupComponent implements OnInit {
         this.checkDepartment(),
         Validators.required,
       ],
+      is_active: [this.data.project ? this.data.project!.is_active : true]
     });
   }
 

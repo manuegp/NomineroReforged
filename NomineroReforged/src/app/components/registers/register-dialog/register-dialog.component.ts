@@ -3,7 +3,9 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { PhaseProject } from '../../../models/phasesProject.model';
-import { Project } from '../../../services/projects.service';
+import { Project } from '../../../models/proyect.model';
+import { SnackbarService } from '../../../snackbar/snackbar';
+
 
 @Component({
   selector: 'app-register-dialog',
@@ -67,7 +69,7 @@ export class RegisterDialogComponent implements OnInit {
       const date = new Date(formData.start)
       date.setHours(date.getHours() + 1);
       formData.start = date.toISOString().slice(0, 19);
-      
+
       this.dialogRef.close(formData);
     } else {
       this.registerForm.markAllAsTouched();

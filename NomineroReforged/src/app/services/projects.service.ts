@@ -3,19 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../enviroments/enviroment';
 import { User } from '../models/user.model';
+import { Project } from '../models/proyect.model';
 
-export interface Project {
-  id: number;
-  code: string;
-  name: string;
-  client: number;
-  estimated: number;
-  date_start: string;
-  date_end: string | null;
-  description: string;
-  type: number;
-  department: number;
-}
+
 
 @Injectable({
   providedIn: 'root',

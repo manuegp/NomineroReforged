@@ -4,8 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DayPilot } from '@daypilot/daypilot-lite-angular';
 import { Register } from '../models/register.model';
-import { Project } from './projects.service';
+
 import { Phase } from '../models/phase.model';
+import { Project } from '../models/proyect.model';
 
 @Injectable({
   providedIn: 'root',
