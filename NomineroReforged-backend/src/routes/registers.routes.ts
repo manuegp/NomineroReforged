@@ -10,6 +10,7 @@ export function registerRoutes(typeController: RegisterController): Router {
   router.post('/', (req, res, next) => typeController.addRegister(req, res, next));
   router.put('/:id', (req, res, next) => typeController.updateRegister(req, res, next));
   router.delete('/:id', (req, res, next) => typeController.deleteRegister(req, res, next));
+  router.post('/generateReport', (req, res, next) => typeController.generateReport(req, res, next));
  
 
   return router;

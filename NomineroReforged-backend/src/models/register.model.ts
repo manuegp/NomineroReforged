@@ -15,16 +15,10 @@ export interface Register {
   created_at?: string | null;
 }
 
-[
-{
-  user: 1,
-  company: '20055',
-  projectCode: "Blabla",
-  id_phase: 71,
-  date: "dd-mm-yyyy",
-  time: 3.5,
-  tasa: '',
-  clasificacion_hora: 'HN',
-  coment: "ola k ase"
+export interface ExcelRegister extends Omit<Register, 'project' | 'phase' | 'delete_mark' | 'is_extra' | 'is_active' | 'updated_by' | 'updated_at' | 'created_by' | 'created_at'> {
+  company: string;
+  projectCode: string;
+  id_phase: string;
+  tasa: string;
+  clasificacion_hora: string;
 }
-]

@@ -1,6 +1,9 @@
 import { Register } from "@/models/register.model";
 import { AppError } from "../utils/errorHandler";
 import { Database } from "sqlite3";
+import { spawn } from "child_process";
+import fs from 'fs';
+import path from "path";
 
 export class RegisterService {
   private db: Database;
@@ -17,19 +20,20 @@ export class RegisterService {
     return new Promise((resolve, reject) => {
       const filters = [];
       const values: any[] = [userId];
-  
+
       if (from) {
-        filters.push('date >= ?');
+        filters.push("date >= ?");
         values.push(from);
       }
-  
+
       if (to) {
-        filters.push('date <= ?');
+        filters.push("date <= ?");
         values.push(to);
       }
-  
-      const whereClause = filters.length > 0 ? `AND ${filters.join(' AND ')}` : '';
-  
+
+      const whereClause =
+        filters.length > 0 ? `AND ${filters.join(" AND ")}` : "";
+
       this.db.all(
         `
         SELECT 
@@ -53,7 +57,7 @@ export class RegisterService {
         values,
         (err, rows) => {
           if (err) {
-            reject(new AppError('Error retrieving registers by user', 500));
+            reject(new AppError("Error retrieving registers by user", 500));
           } else {
             resolve(
               rows.map((row: any) => ({
@@ -75,8 +79,8 @@ export class RegisterService {
       );
     });
   }
-  
-  async addRegister(register: Omit<Register, 'id'>): Promise<number> {
+
+  async addRegister(register: Omit<Register, "id">): Promise<number> {
     return new Promise((resolve, reject) => {
       const query = `
         INSERT INTO NMN_REGISTERS 
@@ -98,7 +102,7 @@ export class RegisterService {
 
       this.db.run(query, params, function (this: { lastID: number }, err) {
         if (err) {
-          reject(new AppError('Error adding register', 500));
+          reject(new AppError("Error adding register", 500));
         } else {
           resolve(this.lastID); // Devuelve el ID del nuevo registro
         }
@@ -107,52 +111,54 @@ export class RegisterService {
   }
 
   async updateRegister(register: Register, id: number): Promise<void> {
-    const { user, project, phase,date,time, is_extra, coment } = register;
+    const { user, project, phase, date, time, is_extra, coment } = register;
     const updateFields: string[] = [];
     const values: any[] = [];
 
     if (user) {
-      updateFields.push('user = ?');
+      updateFields.push("user = ?");
       values.push(user);
     }
     if (project) {
-      updateFields.push('project = ?');
+      updateFields.push("project = ?");
       values.push(project);
     }
     if (phase) {
-      updateFields.push('phase = ?');
+      updateFields.push("phase = ?");
       values.push(phase);
     }
     if (date) {
-      updateFields.push('date = ?');
+      updateFields.push("date = ?");
       values.push(date);
     }
     if (time) {
-      updateFields.push('time = ?');
+      updateFields.push("time = ?");
       values.push(time);
     }
     if (is_extra) {
-      updateFields.push('is_extra = ?');
+      updateFields.push("is_extra = ?");
       values.push(is_extra);
     }
     if (coment) {
-      updateFields.push('coment = ?');
+      updateFields.push("coment = ?");
       values.push(coment);
     }
-    updateFields.push('updated_at = CURRENT_TIMESTAMP');
-    values.push(id)
+    updateFields.push("updated_at = CURRENT_TIMESTAMP");
+    values.push(id);
     return new Promise((resolve, reject) => {
-      this.db.run(`
-        UPDATE NMN_REGISTERS SET ${updateFields.join(', ')} WHERE id = ? AND delete_mark = 0
-        `, 
+      this.db.run(
+        `
+        UPDATE NMN_REGISTERS SET ${updateFields.join(
+          ", "
+        )} WHERE id = ? AND delete_mark = 0
+        `,
         values,
-        (err) =>{
-          if (err) reject(new AppError('Error updating project', 500));
+        (err) => {
+          if (err) reject(new AppError("Error updating project", 500));
           else resolve();
         }
-      
-      )
-    })
+      );
+    });
   }
 
   async deleteRegister(id: number): Promise<void> {
@@ -162,7 +168,7 @@ export class RegisterService {
         [id],
         (err) => {
           if (err) {
-            reject(new AppError('Error deleting', 500));
+            reject(new AppError("Error deleting", 500));
           } else {
             resolve();
           }
@@ -170,4 +176,86 @@ export class RegisterService {
       );
     });
   }
+
+  async generateReport(reportData: any): Promise<{"jsonName": string, "xlsxName": string}> {
+    return new Promise((resolve, reject) => {
+      this.db.all(
+        `SELECT 
+        user, 
+        pro.name AS projectCode, 
+        pha.name AS id_phase, 
+        date, 
+        time, 
+        coment
+    FROM 
+        NMN_REGISTERS REG
+    JOIN 
+        NMN_PROJECTS PRO 
+        ON PRO.id = REG.project
+    JOIN 
+        NMN_PHASE PHA 
+        ON PHA.id = REG.phase
+    WHERE 
+        REG.date BETWEEN ? AND ?
+        AND REG.delete_mark = FALSE;`,
+        [reportData.fromDate, reportData.toDate],
+        (err, rows) => {
+          if (err) {
+            reject(new AppError("Error getting users", 500));
+          } else {
+            let data = rows;
+            const randomName = Math.floor(100 + Math.random() * 900).toString() + '.json';
+            data.map((x:any)=>{
+              x.tasa = "";
+              x.company = "20055";
+              x.clasificacion_hora = "HN"
+            })
+            fs.writeFile(`data/temporary/json/${randomName}`, JSON.stringify(data), async (err) => {
+              if (err) {
+                  console.error(`Error writing file ${randomName}: ${err}`);
+              } else {
+                  console.log(`Successfully wrote file ${randomName}`);
+                  const xlsxName = await this.getExcel(randomName);
+                resolve({xlsxName: xlsxName, jsonName: randomName})
+              }
+          });
+          }
+        }
+      );
+    });
+  }
+
+   async getExcel(jsonFileName: string):Promise<string>{
+    return new Promise((resolve, reject) => {
+      const pythonScriptPath = path.resolve(__dirname, 'main.py');
+      const jsonPath = path.resolve(__dirname, '..','..', 'data','temporary','json',`${jsonFileName}`);
+
+      const randomNameXLSX = Math.floor(100 + Math.random() * 900).toString() + '.xlsx';
+      const pythonProcess = spawn('python', [pythonScriptPath, '-i', jsonPath, '-o', randomNameXLSX]);
+      let output = '';
+    pythonProcess.stdout.on('data', (data) => {
+      output += data.toString();
+    });
+    // Capturar errores estándar (stderr) del script
+    let errorOutput = '';
+    pythonProcess.stderr.on('data', (data) => { 
+      errorOutput += data.toString();
+    });
+
+    // Manejar cierre del proceso
+    pythonProcess.on('close', (code) => {
+      if (code === 0) {
+        resolve(randomNameXLSX); // El proceso terminó exitosamente
+      } else {
+        reject(new Error(`El proceso de Python terminó con código ${code}: ${errorOutput}`));
+      }
+    });
+
+    // Manejar errores en la ejecución
+    pythonProcess.on('error', (err) => {
+      reject(err);
+    });
+    });
+
+   }
 }

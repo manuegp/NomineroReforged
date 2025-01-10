@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DayPilot } from '@daypilot/daypilot-lite-angular';
 import { Register } from '../models/register.model';
+import { saveAs } from 'file-saver'; // Asegúrate de instalar file-saver
+
 
 import { Phase } from '../models/phase.model';
 import { Project } from '../models/proyect.model';
@@ -46,6 +48,23 @@ export class RegistersService {
 
   deleteRegister(idRegister: number): Observable<Register> {
     return this.http.delete<Register>(`${this.apiUrl}/${idRegister}`);
+  }
+
+  exportToXLSX(query: {user: [] | null, toDate:string,  fromDate:string}): void {
+   
+    this.http.post(`${this.apiUrl}/generateReport`, query, { responseType: 'blob' }).subscribe({
+      next: (response: Blob) => {
+        const url = window.URL.createObjectURL(response);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = 'reporte.xlsx'; // Cambia el nombre si es necesario
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error('Error al descargar el reporte:', error);
+      },
+    });
   }
 
   /**
