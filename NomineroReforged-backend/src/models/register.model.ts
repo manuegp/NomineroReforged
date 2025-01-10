@@ -14,3 +14,17 @@ export interface Register {
   created_by?: number | null;
   created_at?: string | null;
 }
+
+[
+{
+  user: 1,
+  company: '20055',
+  projectCode: "Blabla",
+  id_phase: 71,
+  date: "dd-mm-yyyy",
+  time: 3.5,
+  tasa: '',
+  clasificacion_hora: 'HN',
+  coment: "ola k ase"
+}
+]

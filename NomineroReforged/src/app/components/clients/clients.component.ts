@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,7 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { ClientsService } from '../../services/clients.service';
 import { SnackbarService } from '../../snackbar/snackbar';
@@ -39,7 +39,7 @@ export class ClientsComponent implements OnInit {
   selectedClient: Client | null = null;
   totalClients:number = 0;
   clientForm: FormGroup;
-
+ @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   // Paginación
   pageSize = 5;
   currentPage = 0;
@@ -57,6 +57,7 @@ export class ClientsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.paginator._intl.itemsPerPageLabel = 'Registros por pagina';
     this.loadClients();
   }
 

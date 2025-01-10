@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MatPaginatorIntl } from '@angular/material/paginator';
 import { RouterOutlet } from '@angular/router';
 
 
