@@ -429,9 +429,7 @@ export class RegistersComponent implements AfterViewInit {
       },
     ];
   }
-  exportToXLSX(){
-    this.registerService.exportToXLSX({user: null, toDate:'2025-01-01', fromDate: '2025-01-31'})
-  }
+  
 
   calculateTimeDiff(start: string | Date, end: string | Date): number {
     const startDate = new Date(start);

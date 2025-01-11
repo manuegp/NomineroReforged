@@ -1,4 +1,4 @@
-import { Injectable, Type } from '@angular/core';
+import { Injectable, Query, Type } from '@angular/core';
 import { environment } from '../../enviroments/enviroment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -9,6 +9,7 @@ import { saveAs } from 'file-saver'; // Asegúrate de instalar file-saver
 
 import { Phase } from '../models/phase.model';
 import { Project } from '../models/proyect.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -50,14 +51,14 @@ export class RegistersService {
     return this.http.delete<Register>(`${this.apiUrl}/${idRegister}`);
   }
 
-  exportToXLSX(query: {user: [] | null, toDate:string,  fromDate:string}): void {
+  exportToXLSX(query: {users: any[] | null, toDate:string,  fromDate:string}): void {
    
     this.http.post(`${this.apiUrl}/generateReport`, query, { responseType: 'blob' }).subscribe({
       next: (response: Blob) => {
         const url = window.URL.createObjectURL(response);
         const anchor = document.createElement('a');
         anchor.href = url;
-        anchor.download = 'reporte.xlsx'; // Cambia el nombre si es necesario
+        anchor.download = `Registros ${query.toDate}-${query.fromDate}.xlsx`; // Cambia el nombre si es necesario
         anchor.click();
         window.URL.revokeObjectURL(url);
       },

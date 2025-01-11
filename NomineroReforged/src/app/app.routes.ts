@@ -40,6 +40,11 @@ export const routes: Routes = [
             (m) => m.RegistersComponent
           ),
       },
+      {path: 'reports',
+        loadComponent: () =>
+          import('./components/reports/reports.component').then(
+            (m) => m.ReportsComponent
+          )},
       {
         path: 'projects',
         loadComponent: () =>

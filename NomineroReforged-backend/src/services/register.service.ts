@@ -177,54 +177,60 @@ export class RegisterService {
     });
   }
 
-  async generateReport(reportData: any): Promise<{"jsonName": string, "xlsxName": string}> {
+  async generateReport(reportData: any): Promise<{ jsonName: string; xlsxName: string }> {
     return new Promise((resolve, reject) => {
-      this.db.all(
-        `SELECT 
-        user, 
-        pro.name AS projectCode, 
-        pha.name AS id_phase, 
-        date, 
-        time, 
-        coment
-    FROM 
-        NMN_REGISTERS REG
-    JOIN 
-        NMN_PROJECTS PRO 
-        ON PRO.id = REG.project
-    JOIN 
-        NMN_PHASE PHA 
-        ON PHA.id = REG.phase
-    WHERE 
-        REG.date BETWEEN ? AND ?
-        AND REG.delete_mark = FALSE;`,
-        [reportData.fromDate, reportData.toDate],
-        (err, rows) => {
-          if (err) {
-            reject(new AppError("Error getting users", 500));
-          } else {
-            let data = rows;
-            const randomName = Math.floor(100 + Math.random() * 900).toString() + '.json';
-            data.map((x:any)=>{
-              x.tasa = "";
-              x.company = "20055";
-              x.clasificacion_hora = "HN"
-            })
-            fs.writeFile(`data/temporary/json/${randomName}`, JSON.stringify(data), async (err) => {
-              if (err) {
-                  console.error(`Error writing file ${randomName}: ${err}`);
-              } else {
-                  console.log(`Successfully wrote file ${randomName}`);
-                  const xlsxName = await this.getExcel(randomName);
-                resolve({xlsxName: xlsxName, jsonName: randomName})
-              }
+      // Creamos un marcador de posición para cada ID de usuario
+      const userPlaceholders = reportData.users.map(() => '?').join(', ');
+      const sqlQuery = `
+        SELECT 
+          user, 
+          pro.name AS projectCode, 
+          pha.name AS id_phase, 
+          date, 
+          time, 
+          coment
+        FROM 
+          NMN_REGISTERS REG
+        JOIN 
+          NMN_PROJECTS PRO 
+          ON PRO.id = REG.project
+        JOIN 
+          NMN_PHASE PHA 
+          ON PHA.id = REG.phase
+        WHERE 
+          REG.date BETWEEN ? AND ?
+          AND REG.user IN (${userPlaceholders})
+          AND REG.delete_mark = FALSE;
+      `;
+  
+      const queryParams = [reportData.fromDate, reportData.toDate, ...reportData.users];
+  
+      this.db.all(sqlQuery, queryParams, (err, rows) => {
+        if (err) {
+          reject(new AppError("Error getting users", 500));
+        } else {
+          const data = rows.map((row: any) => ({
+            ...row,
+            tasa: "",
+            company: "20055",
+            clasificacion_hora: "HN",
+          }));
+  
+          const randomName = `${Math.floor(100 + Math.random() * 900)}.json`;
+          fs.writeFile(`data/temporary/json/${randomName}`, JSON.stringify(data), async (err) => {
+            if (err) {
+              console.error(`Error writing file ${randomName}: ${err}`);
+            } else {
+              console.log(`Successfully wrote file ${randomName}`);
+              const xlsxName = await this.getExcel(randomName);
+              resolve({ xlsxName, jsonName: randomName });
+            }
           });
-          }
         }
-      );
+      });
     });
   }
-
+  
    async getExcel(jsonFileName: string):Promise<string>{
     return new Promise((resolve, reject) => {
       const pythonScriptPath = path.resolve(__dirname, 'main.py');

@@ -48,17 +48,13 @@ export class DashboardComponent implements OnInit {
     });
     if (this.rol == 'Admin' || this.rol == 'Superadmin') {
       this.menuItems.push(
+        
         { icon: 'people', label: 'Usuarios', route: '/dashboard/users' },
         { icon: 'business', label: 'Clientes', route: '/dashboard/clients' },
-        { icon: 'assignment', label: 'Proyectos', route: '/dashboard/projects' }
+        { icon: 'assignment', label: 'Proyectos', route: '/dashboard/projects' },
+        { icon: 'wysiwyg', label: 'Reportes', route: '/dashboard/reports' }
       );
     }
   }
 }
 
-// { icon: 'home', label: 'Inicio', route: '/dashboard/home' },
-//     { icon: 'business', label: 'Clientes', route: '/dashboard/clients' },
-//     { icon: 'assignment', label: 'Proyectos', route: '/dashboard/projects' },
-//     { icon: 'people', label: 'Usuarios', route: '/dashboard/users' },
-//     { icon: 'schedule', label: 'Registros', route: '/dashboard/registers' },
-//     { icon: 'settings', label: 'Configuración', route: '/dashboard/settings' }

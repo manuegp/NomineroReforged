@@ -1,0 +1,85 @@
+<div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header text-center">Exportar registros</div>
+          <div class="card-body">
+            <form [formGroup]="typeForm">
+              <div class="row mb-3">
+                <!-- Campo Desde -->
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Desde</mat-label>
+                    <input matInput [matDatepicker]="fromDatePicker" formControlName="fromDate">
+                    <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fromDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <!-- Campo Hasta -->
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Hasta</mat-label>
+                    <input matInput [matDatepicker]="toDatePicker" formControlName="toDate">
+                    <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #toDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+  
+              <div class="row mb-3">
+                <!-- Autocomplete para Usuarios -->
+                <div class="col-md-8">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Empleados</mat-label>
+                    <mat-chip-grid #chipGrid aria-label="Usuarios seleccionados">
+                      <mat-chip-row
+                        *ngFor="let user of selectedUsers"
+                        (removed)="removeUser(user)"
+                      >
+                        {{ user.name + ' ' + user.surname }}
+                        <button
+                          matChipRemove
+                          [attr.aria-label]="'Eliminar usuario ' + user.name + ' ' + user.surname"
+                        >
+                          <mat-icon>cancel</mat-icon>
+                        </button>
+                      </mat-chip-row>
+                    </mat-chip-grid>
+                    <input
+                      matInput
+                      placeholder="Seleccionar usuarios"
+                      [matChipInputFor]="chipGrid"
+                      [matAutocomplete]="userAuto"
+                      [formControl]="userFilterCtrl"
+                    />
+                    <mat-autocomplete #userAuto="matAutocomplete" (optionSelected)="addUser($event)">
+                      <mat-option *ngFor="let user of filteredUsers" [value]="user">
+                        {{ user.name + ' ' + user.surname }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+  
+                <!-- Checkbox -->
+                <div class="col-md-4 d-flex align-items-center">
+                  <mat-checkbox [formControl]="selectAllControl">
+                    Seleccionar todos
+                  </mat-checkbox>
+                </div>
+              </div>
+  
+              <!-- Botón de Enviar -->
+              <div class="row justify-content-center">
+                <div class="col-md-4">
+                  <button mat-raised-button color="primary" (click)="sendToExport()" class="w-100" [disabled]="typeForm.invalid">
+                    Exportar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
